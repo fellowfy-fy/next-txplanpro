@@ -19,7 +19,7 @@ const items = [
   {
     title: "Dashboard",
     icon: Grid2x2,
-    path: "/",
+    path: "/dashboard",
   },
   {
     title: "All Plans",

@@ -1,48 +1,46 @@
 "use client";
 
-import React, { useRef } from "react";
-import { useReactToPrint } from "react-to-print";
+import React from "react";
 import Slides from "@/components/shared/slides";
+import { useSlideImagesStore } from "@/store/slideImagesState";
 
 const HomePage: React.FC = () => {
-  const componentRef = useRef<HTMLDivElement>(null);
+  const { images } = useSlideImagesStore();
 
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-    documentTitle: "Мои слайды",
-    pageStyle: `
-      @page {
-        size: A4 landscape; 
-        margin: 0;
-      }
-      @media print {
-        body {
-          print-color-adjust: exact;
-          -webkit-print-color-adjust: exact;
-        }
-        .slide-container {
-          page-break-after: auto;
-          page-break-inside: avoid;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-        }
-        .slide-container:not(:last-child) {
-          page-break-after: always;
-        }
-      }
-    `,
-  });
+  const handleGeneratePDF = async () => {
+    const response = await fetch("/api/generate-pdf", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ images }),
+    });
+
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      a.download = "slides.pdf";
+      document.body.appendChild(a);
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } else {
+      alert("Ошибка при генерации PDF");
+    }
+  };
 
   return (
     <div className="flex flex-col items-center mt-10">
-      <Slides ref={componentRef} />
+      <Slides images={images} />
       <button
-        onClick={handlePrint}
+        onClick={handleGeneratePDF}
         className="mt-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
       >
-        Распечатать слайды!
+        Скачать PDF
       </button>
     </div>
   );

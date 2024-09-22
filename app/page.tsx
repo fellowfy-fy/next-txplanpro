@@ -1,4 +1,4 @@
-import { Title } from "@/components/shared/title";
+import { Title } from "@/components/ui/title";
 import { Container } from "@/components/shared/container";
 import { PatientCard } from "@/components/shared/patient-card";
 export default function Home() {
