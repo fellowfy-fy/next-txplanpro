@@ -24,17 +24,17 @@ const items = [
   {
     title: "All Plans",
     icon: Notebook,
-    path: "/",
+    path: "/all-plans",
   },
   {
     title: "Ready to Present",
     icon: Megaphone,
-    path: "/",
+    path: "/ready-to-present",
   },
   {
     title: "To-do Plans",
     icon: ListTodo,
-    path: "/",
+    path: "/todo-plans",
   },
   {
     title: "Settings",
