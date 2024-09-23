@@ -14,10 +14,10 @@ export default function Dashboard() {
 
   return (
     <Container>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center flex-col lg:flex-row">
         <div>
           <Title text="Welcome to TxPlanPro!" size="xl" className="font-bold" />
-          <PageDescription text="Create fast, professional and visual appealing Dental Treatment Plans online" size="sm" />
+          <PageDescription text="Create fast, professional and visual appealing Dental Treatment Plans online" size="sm" className="pb-3 lg:pb-0"/>
         </div>
         <Button onClick={() => { router.push("/create"); }} className="flex items-center">
           <House size={18} className="mr-2" /> 

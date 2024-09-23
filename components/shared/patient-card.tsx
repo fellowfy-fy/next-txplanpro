@@ -28,7 +28,7 @@ export function PatientCard({ className, ...props }: CardProps) {
         {/* <CardTitle>Notifications</CardTitle>
         <CardDescription>You have 3 unread messages.</CardDescription> */}
 
-        <div className="relative w-full h-[400px] overflow-hidden rounded-t-2xl">
+        <div className="relative w-full h-[200px] md:h-[400px] overflow-hidden rounded-t-2xl">
           <Image
             src="/placeholder.jpg"
             layout="fill"
@@ -48,12 +48,12 @@ export function PatientCard({ className, ...props }: CardProps) {
           </div>
         </div>
           <hr />
-          <div className="flex flex-row gap-[380px]">
+          <div className="flex flex-row justify-between items-center">
             <p className="text-lg leading-none flex flex-row">by dr. {patient.doctor}</p>
             <p className="text-lg font-bold leading-none">{patient.price}$</p>
           </div>
           <hr />
-          <div className="flex flex-row gap-[340px]">
+          <div className="flex flex-row justify-between items-center">
             <p className="text-lg leading-none">Presentstion: {patient.presentation}</p>
             <p className="text-lg leading-none">Status: {patient.status}</p>
           </div>
