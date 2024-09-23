@@ -11,17 +11,19 @@ import { Shrink } from "lucide-react";
 const patient = {
   name: "Jane Doe.",
   description: "Missing teeth in upper and lower molars, Discoloured teeth, Worn dentition: Attrition due to improper bite, Multiple caries, Endodontic compromise Secondary tooth deformation: Malalignment may require orthodontic treatment to achieve optimal aesthetics and function.",
-  doctor: "Dr. Jane Smith",
-  price: 30000,
+  doctor: "Jane Smith",
+  price: "30 990",
   presentation: "June 15th, 2023",
   status: "Ready",
 };
+
+
 
 type CardProps = React.ComponentProps<typeof Card>;
 
 export function PatientCard({ className, ...props }: CardProps) {
   return (
-    <Card className={cn("w-auto rounded-2xl", className)} {...props}>
+    <Card className={cn("w-auto rounded-2xl bg-[#F8F9FA]", className)} {...props}>
       <CardHeader className="relative p-0">
         {/* <CardTitle>Notifications</CardTitle>
         <CardDescription>You have 3 unread messages.</CardDescription> */}
@@ -36,15 +38,26 @@ export function PatientCard({ className, ...props }: CardProps) {
         </div>
       </CardHeader>
       <CardContent className="grid gap-4 mt-5">
-        <div className="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
+        <div>
           <span className="flex translate-y-1" />
           <div className="space-y-1">
-            <p className="text-sm font-medium leading-none">{patient.name}</p>
+            <p className="text-xl font-bold leading-none pb-2">Patient: {patient.name}</p>
             <p className="text-sm text-muted-foreground">
               {patient.description}
             </p>
           </div>
         </div>
+          <hr />
+          <div className="flex flex-row gap-[380px]">
+            <p className="text-lg leading-none flex flex-row">by dr. {patient.doctor}</p>
+            <p className="text-lg font-bold leading-none">{patient.price}$</p>
+          </div>
+          <hr />
+          <div className="flex flex-row gap-[340px]">
+            <p className="text-lg leading-none">Presentstion: {patient.presentation}</p>
+            <p className="text-lg leading-none">Status: {patient.status}</p>
+          </div>
+
       </CardContent>
       <CardFooter>
       </CardFooter>
