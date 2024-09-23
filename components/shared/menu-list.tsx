@@ -7,6 +7,8 @@ import {
   ListTodo,
   Settings,
   SquarePlus,
+  User,
+  CircleHelp,
 } from "lucide-react";
 import { useMenuStore } from "@/store/activeMenuItem";
 import { useRouter } from "next/navigation";
@@ -37,14 +39,24 @@ const items = [
     path: "/todo-plans",
   },
   {
-    title: "Settings",
-    icon: Settings,
-    path: "/",
-  },
-  {
     title: "Create",
     icon: SquarePlus,
     path: "/create",
+  },
+  {
+    title: "Patients",
+    icon: User,
+    path: "/patients",
+  },
+  {
+    title: "Settings",
+    icon: Settings,
+    path: "/settings",
+  },
+    {
+    title: "Support",
+    icon: CircleHelp,
+    path: "/support",
   },
 ];
 
