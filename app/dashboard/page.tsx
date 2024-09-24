@@ -1,7 +1,8 @@
 "use client";
+import * as React from "react";
 import { Title } from "@/components/ui/title";
 import { PageDescription } from "@/components/ui/page-description";
-import { Container } from "@/components/shared/container";
+import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { House } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -40,14 +41,21 @@ export default function Dashboard() {
       </ElementGrid>
 
       <div className="flex justify-center my-7">
-        <Button variant="secondary" className="w-[200px] h-[50px]">View all plans</Button>
+        {/* Редирект с кнопки на /all-plans */}
+        <Button
+          variant="secondary"
+          className="w-[200px] h-[50px]"
+          onClick={() => router.push("/all-plans")} // Редирект при нажатии на кнопку
+        >
+          View all plans
+        </Button>
       </div>
 
       <hr className="mb-7" />
 
       <ElementGrid>
-      <DashboardCreate variant="txplan" />
-      <DashboardCreate variant="dsd" />
+        <DashboardCreate variant="txplan" />
+        <DashboardCreate variant="dsd" />
       </ElementGrid>
     </Container>
   );

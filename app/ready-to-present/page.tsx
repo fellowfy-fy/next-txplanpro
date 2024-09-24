@@ -1,6 +1,6 @@
 "use client";
 import { Title } from "@/components/ui/title";
-import { Container } from "@/components/shared/container";
+import { Container } from "@/components/ui/container";
 import { useRouter } from "next/navigation";
 import { PatientCard } from "@/components/shared/patient-card";
 import ElementGrid from "@/components/shared/element-grid";

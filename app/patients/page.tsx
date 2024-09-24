@@ -2,7 +2,7 @@
 import { Title } from "@/components/ui/title";
 import { PageDescription } from "@/components/ui/page-description";
 import { useRouter } from "next/navigation";
-import { Container } from "@/components/shared/container";
+import { Container } from "@/components/ui/container";
 import ElementGrid from "@/components/shared/element-grid";
 import { ActionCard } from "@/components/shared/action-cards";
 import { SearchBox } from "@/components/ui/searchbox";
@@ -25,8 +25,8 @@ export default function Patients() {
       <ElementGrid>
         <ActionCard variant="upload" />
         <ActionCard variant="treatment" />
+        <ActionCard variant="dsdp" />
         <ActionCard variant="payment" />
-        <ActionCard variant="insurance" />
       </ElementGrid>
 
     </Container>

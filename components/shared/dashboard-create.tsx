@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/card";
 import { Bookmark, Circle } from "lucide-react"; // Импорт иконок из lucide
 import clsx from "clsx";
+import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation"; // Импорт роутера
 
 type DashboardCreateVariant = "txplan" | "dsd"; // Типы карточек
 
@@ -20,6 +22,8 @@ interface DashboardCreateProps {
 }
 
 export function DashboardCreate({ variant = "txplan", className }: DashboardCreateProps) {
+  const router = useRouter(); // Инициализация роутера
+
   // Логика вариативности карточек
   const cardData = {
     txplan: {
@@ -40,22 +44,30 @@ export function DashboardCreate({ variant = "txplan", className }: DashboardCrea
   const { title, description, buttonText, Icon } = cardData[variant];
 
   return (
-    <Card className={clsx("w-auto bg-[#F8F9FA] rounded-lg shadow-sm", className)}>
-      <CardHeader className="flex items-left space-x-4 text-left"> 
+    <Card
+      className={cn(
+        "w-auto rounded-2xl bg-[#F8F9FA] cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between",
+        className
+      )}
+    >
+      <CardHeader className="flex items-left space-x-4 text-left">
         <div className="pl-2 pb-2">
-            <div className="flex justify-center items-center w-10 h-10 rounded-full border border-gray-300">
-                <Icon className="w-5 h-5 text-gray-400" /> 
-            </div>
+          <div className="flex justify-center items-center w-10 h-10 rounded-full border border-gray-300">
+            <Icon className="w-5 h-5 text-gray-400" />
+          </div>
         </div>
         <div>
-          <CardTitle className="text-xl font-bold text-left pb-2">{title}</CardTitle> 
-          <CardDescription className="text-gray-500 text-lg text-left"> 
-            {description}
-          </CardDescription>
+          <CardTitle className="text-xl font-bold text-left pb-2">{title}</CardTitle>
+          <CardDescription className="text-gray-500 text-lg text-left">{description}</CardDescription>
         </div>
       </CardHeader>
-      <CardFooter className=" text-left">
-        <Button variant="outline" className="w-[200px] h-[50px] text-gray-500">
+      <CardContent className="flex-grow"></CardContent> {/* Заполнение пространства */}
+      <CardFooter className="text-left">
+        <Button
+          variant="outline"
+          className="w-[200px] h-[50px] text-gray-500"
+          onClick={() => router.push("/create-plan")} // Редирект на /create-plan
+        >
           {buttonText}
         </Button>
       </CardFooter>

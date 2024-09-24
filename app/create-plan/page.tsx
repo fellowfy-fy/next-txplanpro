@@ -1,5 +1,5 @@
 import { Title } from "@/components/ui/title";
-import { Container } from "@/components/shared/container";
+import { Container } from "@/components/ui/container";
 import TeethDiagram from "@/components/shared/teeth-form";
 
 export default function Create() {

@@ -7,7 +7,7 @@ import ElementGrid from "@/components/shared/element-grid";
 import { ActionCard } from "@/components/shared/action-cards";
 import { SearchBox } from "@/components/ui/searchbox";
 
-export default function Create() {
+export default function Settings() {
   const router = useRouter();
 
   const patient = {
@@ -16,17 +16,15 @@ export default function Create() {
 
   return (
     <Container>
-      <Title text="Patient: Jane Doe" size="lg" className="font-bold" />
       <PageDescription text="Upload patient diagnostic data, create treatment plan or a DSD project" size="sm" className="pb-4"/>
 
-      <SearchBox/>
-
-      <Title text="Create your new..." size="lg" className="font-bold pt-3" />
+      <Title text="dr. JOHN DOE, Smile-clinic Ltd." size="lg" className="font-bold" />
       
       <ElementGrid>
-        <ActionCard variant="complex" />
-        <ActionCard variant="dsd" />
-        <ActionCard variant="local" />
+        <ActionCard variant="uploadC" />
+        <ActionCard variant="dental" />
+        <ActionCard variant="team" />
+        <ActionCard variant="texts" />
       </ElementGrid>
 
     </Container>

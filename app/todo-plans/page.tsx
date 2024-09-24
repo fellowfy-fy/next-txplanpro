@@ -1,6 +1,6 @@
 "use client";
 import { Title } from "@/components/ui/title";
-import { Container } from "@/components/shared/container";
+import { Container } from "@/components/ui/container";
 import { useRouter } from "next/navigation";
 import { PatientCard } from "@/components/shared/patient-card";
 import ElementGrid from "@/components/shared/element-grid";
@@ -14,14 +14,24 @@ export default function ToDoPlans() {
       <Title text="Your To-Do Plans" size="xl" className="font-bold" />
 
       <div className="flex flex-row sm:justify-start justify-center gap-2 py-4">
-        <Button variant="outline" className="w-[150px] h-[40px] text-gray-500">
+        {/* Кнопка "All plans" с редиректом на /all-plans */}
+        <Button
+          variant="outline"
+          className="w-[150px] h-[40px] text-gray-500"
+          onClick={() => router.push("/all-plans")}
+        >
           All plans
         </Button>
-        <Button variant="secondary" className="w-[150px] h-[40px]">
-          View all plans
+
+        {/* Кнопка "Create plan" с редиректом на /create */}
+        <Button
+          variant="secondary"
+          className="w-[150px] h-[40px]"
+          onClick={() => router.push("/create")}
+        >
+          Create plan
         </Button>
       </div>
-
 
       <ElementGrid>
         <PatientCard />

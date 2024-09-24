@@ -3,31 +3,80 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { UploadCloud, ClipboardList, Smile, FileText, DollarSign, Image, Layers } from "lucide-react"; // Импорт нужных иконок
-import clsx from "clsx";
+import { useRouter } from "next/navigation"; 
+import {
+  UploadCloud,
+  ClipboardList,
+  Smile,
+  DollarSign,
+  Image,
+  Layers,
+} from "lucide-react"; 
+import { cn } from "@/lib/utils";
 
-type ActionCardVariant = "upload" | "treatment" | "dsd" | "payment" | "insurance" | "complex" | "local"; // Варианты карточек
+type ActionCardVariant =
+  | "upload"
+  | "treatment"
+  | "dsd"
+  | "payment"
+  | "complex"
+  | "local"
+  | "dsdp"
+  | "uploadC"
+  | "dental"
+  | "team"
+  | "texts"; 
 
 interface ActionCardProps {
-  variant?: ActionCardVariant; // Вариант карточки
+  variant?: ActionCardVariant;
   className?: string;
 }
 
 export function ActionCard({ variant = "upload", className }: ActionCardProps) {
-  // Логика вариативности карточек
+  const router = useRouter(); 
+
   const cardData = {
+    // create
+    complex: {
+      title: "Complex treatment plan",
+      description: "Ai - generated, fully customizable",
+      details:
+        "Create fast, professional and visual appealing Dental Treatment Plans online in just several minutes. Increase patient's trust and your clinic's brand identity",
+      buttonText: ["CREATE"],
+      Icon: Image,
+      redirectUrl: "/create-plan", 
+    },
+    dsd: {
+      title: "Digital Smile Design projects",
+      description: "The core of your complex planning",
+      details:
+        "Treatment plan, motivate and educate Your patients. Increase case acceptance and Your understanding of Your patient's clinical needs",
+      buttonText: ["CREATE", "OPEN"],
+      Icon: Smile,
+    },
+    local: {
+      title: "Local (segment) treatment plan",
+      description: "Fast and easy",
+      details: "Make presentations even for on-going local treatments",
+      buttonText: ["CREATE"],
+      Icon: Layers,
+    },
+
+    // patients
     upload: {
       title: "Upload patient's data",
-      description: "Add photos, x-rays or videos to database. Add as many photos or x-rays of Your patient as You need to create a great looking treatment plan or Digital Smile Design project.",
+      description: "Add photos, x-rays or videos to database",
+      details:
+        "Add as many photos or x-rays of Your patient as You need to create a great looking treatment plan or Digital Smile Design project",
       buttonText: ["UPLOAD", "OPEN DATABASE"],
       Icon: UploadCloud,
     },
+
     treatment: {
       title: "Treatment Plans",
       description: "Create new or open existing",
@@ -35,13 +84,16 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
       buttonText: ["CREATE", "OPEN"],
       Icon: ClipboardList,
     },
-    dsd: {
+
+    dsdp: {
       title: "Digital Smile Design projects",
-      description: "Create new or open existing",
-      details: "Make sure You have minimum of 2 good photos in DSD protocol (retractor-photo and smile photo) in the database or on Your device.",
+      description: "Create new or open existing ",
+      details:
+        "Make sure You have minimum of 2 good photos in DSD protocol (retractor-photo and smile photo) in the database or on Your device",
       buttonText: ["CREATE", "OPEN"],
       Icon: Smile,
     },
+
     payment: {
       title: "Payments and insurance",
       description: "Invoices and other documents",
@@ -49,23 +101,41 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
       buttonText: ["CREATE", "OPEN"],
       Icon: DollarSign,
     },
-    complex: {
-      title: "Complex treatment plan",
-      description: "Ai - generated, fully customizable. Create fast, professional and visual appealing Dental Treatment Plans online in just several minutes. Increase patient’s trust and your clinic’s brand identity.",
-      buttonText: ["CREATE"],
-      Icon: Image,
+
+    // settings
+    uploadC: {
+      title: "Clinic logo and photos",
+      description: "Interior and exterior photos of clinic",
+      details:
+        "These photos are used in the static part of the treatment plan template, describing and showing Your clinic better for the patient",
+      buttonText: ["UPLOAD", "OPEN DATABASE"],
+      Icon: UploadCloud,
     },
-    local: {
-      title: "Local (segment) treatment plan",
-      description: "Fast and easy. Make presentations even for on-going local treatments.",
-      buttonText: ["CREATE"],
-      Icon: Layers,
+
+    dental: {
+      title: "Dental care photos",
+      description: "Surgery/Ortho/Therapy/Prostho",
+      details: "Add photos describing best Your clinical care processes",
+      buttonText: ["UPLOAD", "OPEN DATABASE"],
+      Icon: UploadCloud,
     },
-    insurance: {
-      title: "Invoices and insurance",
-      description: "Manage and process invoices and other related documents.",
-      buttonText: ["CREATE", "OPEN"],
-      Icon: FileText,
+
+    team: {
+      title: "Your team",
+      description: "Doctors, Admins or Assistants",
+      details:
+        "Whoever You want to be shown in the template, so that the patient better know Your team",
+      buttonText: ["UPLOAD", "OPEN DATABASE"],
+      Icon: UploadCloud,
+    },
+
+    texts: {
+      title: "Static texts",
+      description: "Describe Your clinic and your care",
+      details:
+        "Whoever You want to be shown in the template, so that the patient better know Your team",
+      buttonText: ["UPLOAD", "OPEN DATABASE"],
+      Icon: UploadCloud,
     },
   };
 
@@ -77,23 +147,38 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
     return null;
   }
 
-  const { title, description, buttonText, Icon, details } = card;
+  const { title, description, buttonText, Icon, details, redirectUrl } = card;
+
+  // Функция для обработки редиректа
+  const handleRedirect = () => {
+    if (redirectUrl) {
+      router.push(redirectUrl);
+    }
+  };
 
   return (
-    <Card className={clsx("w-auto bg-[#F8F9FA] rounded-lg shadow-sm h-auto md:h-[300px] flex flex-col justify-between", className)}>
+    <Card
+      className={cn(
+        "w-auto rounded-2xl bg-[#F8F9FA] cursor-pointer hover:shadow-lg transition-shadow duration-300",
+        className
+      )}
+    >
       <CardHeader className="flex items-left space-x-4 text-left">
-        <div className="pl-2 pb-2">
+        <div className="flex items-center pb-3">
           <div className="flex justify-center items-center w-10 h-10 rounded-full border border-blue-500">
-            <Icon className="w-5 h-5 text-blue-500" /> {/* Иконка на основе варианта */}
+            <Icon className="w-5 h-5 text-blue-500" />
           </div>
+          <CardTitle className="text-xl font-bold ml-3">
+            {title}
+          </CardTitle>
         </div>
+
         <div>
-          <CardTitle className="text-xl font-bold text-left pb-2">{title}</CardTitle>
-          <CardDescription className="text-gray-500 text-lg text-left">
+          <CardDescription className="text-xl font-bold text-left flex text-black">
             {description}
           </CardDescription>
           {details && (
-            <p className="text-sm text-gray-400 whitespace-pre-wrap mt-2">
+            <p className="text-md text-gray-400 whitespace-pre-wrap mt-2">
               {details}
             </p>
           )}
@@ -101,15 +186,25 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
       </CardHeader>
       <CardFooter className="text-left space-x-2">
         {buttonText.length === 1 ? (
-          <Button variant="outline" className="w-[150px] h-[40px] text-gray-500">
+          <Button
+            variant="outline"
+            className="w-[150px] h-[40px] text-gray-500"
+            onClick={handleRedirect}
+          >
             {buttonText[0]}
           </Button>
         ) : (
           <>
-            <Button variant="outline" className="w-[150px] h-[40px] text-gray-500">
+            <Button
+              variant="outline"
+              className="w-[150px] h-[40px] text-gray-500"
+            >
               {buttonText[0]}
             </Button>
-            <Button variant="outline" className="w-[150px] h-[40px] text-gray-500">
+            <Button
+              variant="outline"
+              className="w-[150px] h-[40px] text-gray-500"
+            >
               {buttonText[1]}
             </Button>
           </>
