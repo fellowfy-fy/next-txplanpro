@@ -31,6 +31,8 @@ const DragDrop = ({ variant = "upper_occlusal", className, onDrop }: DragDropPro
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const variantData = {
+
+    // upload-patients
     upper_occlusal: {
       label: "Upper Occlusal Photo",
       description: "Upload the upper occlusal photo.",
@@ -87,6 +89,7 @@ const DragDrop = ({ variant = "upper_occlusal", className, onDrop }: DragDropPro
       Icon: CloudUpload, 
     },
 
+    // upload-clinic
     intro: {
       label: "Intro",
       description: "Upload intro image.",
@@ -102,7 +105,6 @@ const DragDrop = ({ variant = "upper_occlusal", className, onDrop }: DragDropPro
       description: "Upload Break image.",
       Icon: CloudUpload, 
     },
-
   };
 
   // Проверка существования выбранного варианта
