@@ -20,8 +20,8 @@ export const PageDescription: React.FC<Props> = ({ text, size = "sm", className 
   } as const;
 
   const mapClassNameBySize = {
-    xs: "text-[16px]",
-    sm: "text-[22px]",
+    xs: "text-[18px]",
+    sm: "text-[20px]",
     md: "text-[26px]",
     lg: "text-[32px]",
     xl: "text-[40px]",

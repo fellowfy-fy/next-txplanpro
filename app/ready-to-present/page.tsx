@@ -10,7 +10,7 @@ export default function ReadyToPresent() {
 
   return (
     <Container>
-      <Title text="Your Ready To Present Plans" size="xl" className="font-bold" />
+      <Title text="Your Ready To Present Plans" size="lg" className="font-bold" />
 
       <ElementGrid>
         <PatientCard />

@@ -11,10 +11,9 @@ export default function ToDoPlans() {
 
   return (
     <Container>
-      <Title text="Your To-Do Plans" size="xl" className="font-bold" />
+      <Title text="Your To-Do Plans" size="lg" className="font-bold" />
 
       <div className="flex flex-row sm:justify-start justify-center gap-2 py-4">
-        {/* Кнопка "All plans" с редиректом на /all-plans */}
         <Button
           variant="outline"
           className="w-[150px] h-[40px] text-gray-500"
@@ -23,7 +22,6 @@ export default function ToDoPlans() {
           All plans
         </Button>
 
-        {/* Кнопка "Create plan" с редиректом на /create */}
         <Button
           variant="secondary"
           className="w-[150px] h-[40px]"

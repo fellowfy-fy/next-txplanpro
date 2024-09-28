@@ -9,7 +9,7 @@ export default function SupportPage() {
   return (
     <Container className="max-w-[1000px]">
       <Title text="Contact Us" size="lg" className="font-semibold" />
-      <PageDescription text="Reach out with your questions and feedback. We're here to help with any inquiries you have." size="xs" className="pb-4"/>
+      <PageDescription text="Reach out with your questions and feedback. We're here to help with any inquiries you have." size="sm" className="pb-4"/>
       <div className="flex flex-col md:flex-row gap-6 mt-6 justify-between">
         <SupportContacts />
         <SupportForm />

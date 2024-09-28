@@ -11,8 +11,8 @@ export default function AllPlans() {
 
   return (
     <Container>
-      <Title text="All TxPlans" size="xl" className="font-bold" />
-      <PageDescription text="Unlock the world of web development effortlessly with our innovative e-learning courses. Elevate your skills, build a dynamic portfolio, and launch your web development or no-code career with our industry-aligned certifications and dedicated job placement assistance." size="sm" className="pb-3 lg:pb-0"/>
+      <Title text="All TxPlans" size="lg" className="font-bold" />
+      <PageDescription text="Unlock the world of web development effortlessly with our innovative e-learning courses. Elevate your skills, build a dynamic portfolio, and launch your web development or no-code career with our industry-aligned certifications and dedicated job placement assistance." size="xs" className="pb-3 lg:pb-0 max-w-[1200px]"/>
 
       <ElementGrid>
         <PatientCard />
