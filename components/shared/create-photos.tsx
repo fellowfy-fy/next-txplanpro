@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { UploadCloud, Cloud } from "lucide-react";
 import DragDrop from "../ui/drag-drop";
 import ElementGrid from "./element-grid";
 

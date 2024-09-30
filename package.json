@@ -20,8 +20,10 @@
     "@radix-ui/react-tabs": "^1.1.0",
     "@react-google-maps/api": "^2.19.3",
     "@tailwindcss/aspect-ratio": "^0.4.2",
+    "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "input-otp": "^1.2.4",
     "lucide-react": "^0.445.0",
     "next": "14.2.13",
     "puppeteer": "^23.4.0",
@@ -40,8 +42,8 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
     "typescript": "^5"
   }
 }
