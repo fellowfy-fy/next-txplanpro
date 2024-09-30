@@ -4,13 +4,6 @@ import { useCallback, useState } from "react";
 import { PageDescription } from "@/components/ui/page-description";
 import { useRouter } from "next/navigation";
 import { Container } from "@/components/ui/container";
-import { SearchBox } from "@/components/ui/searchbox";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
 import ElementGrid from "@/components/shared/element-grid";
 import DragDrop from "@/components/ui/drag-drop";
 
@@ -31,9 +24,7 @@ export default function UploadClinic() {
     <Container className="max-w-[1000px]">
       <PageDescription text="Upload Your clinic photos to be used in Your treatment plans templates" size="sm" className="pb-4"/>
 
-      <SearchBox/>
-
-      <Title text="Dr. Jane Doe" size="lg" className="font-bold pt-3" />
+      <Title text="Clinic: British Smile" size="lg" className="font-bold pt-3" />
 
       <center className="py-8"><Title text="Upload Clinic logo & photos" size="xl" className="font-bold" /></center>
 

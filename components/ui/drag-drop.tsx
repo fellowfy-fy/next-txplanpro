@@ -101,7 +101,7 @@ const DragDrop = ({ variant = "upper_occlusal", className, onDrop }: DragDropPro
       Icon: CloudUpload, 
     },
     break: {
-      label: "X-Rays",
+      label: "Break",
       description: "Upload Break image.",
       Icon: CloudUpload, 
     },

@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { UploadCloud, Cloud } from "lucide-react";
 import DragDrop from "../ui/drag-drop";
+import ElementGrid from "./element-grid";
 
 const Photos = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -31,23 +32,13 @@ const Photos = () => {
         )}
       </ul>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Drag & Drop для загрузки файлов */}
-        <DragDrop
-          onDrop={onDropFiles}
-          label="Drag&Drop files here"
-          description="Upload photos, x-rays, or videos."
-          Icon={UploadCloud}
-        />
-
-        {/* Drag & Drop для загрузки из базы данных */}
-        <DragDrop
-          onDrop={onDropDatabaseFiles}
-          label="Use from TxPlanPro database"
-          description="Upload to database."
-          Icon={Cloud}
-        />
-      </div>
+            <ElementGrid>
+                <DragDrop variant="upper_occlusal" />
+                <DragDrop variant="lower_occlusal" />
+                <DragDrop variant="side_left" />
+                <DragDrop variant="side_right" />
+            </ElementGrid>
+                <DragDrop variant="panoramic_xray" className="w-full mt-5" />
     </div>
   );
 };

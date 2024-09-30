@@ -49,10 +49,10 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
         "Create fast, professional and visual appealing Dental Treatment Plans online in just several minutes. Increase patient's trust and your clinic's brand identity",
       buttonText: ["CREATE"],
       Icon: Image,
-      redirectUrl: "/create-plan", 
+      redirectUrlFirst: "/create-plan", 
     },
     dsd: {
-      title: "Digital Smile Design projects",
+      title: "Digital Smile Design",
       description: "The core of your complex planning",
       details:
         "Treatment plan, motivate and educate Your patients. Increase case acceptance and Your understanding of Your patient's clinical needs",
@@ -75,6 +75,7 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
         "Add as many photos or x-rays of Your patient as You need to create a great looking treatment plan or Digital Smile Design project",
       buttonText: ["UPLOAD", "OPEN DATABASE"],
       Icon: UploadCloud,
+      redirectUrlFirst: "/upload-patients", 
     },
 
     treatment: {
@@ -83,6 +84,8 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
       details: "To-do (1)\nReady to present (0)\nAccepted (0)",
       buttonText: ["CREATE", "OPEN"],
       Icon: ClipboardList,
+      redirectUrlFirst: "/create",
+      redirectUrlSecond: "/all-plans",  
     },
 
     dsdp: {
@@ -92,6 +95,7 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
         "Make sure You have minimum of 2 good photos in DSD protocol (retractor-photo and smile photo) in the database or on Your device",
       buttonText: ["CREATE", "OPEN"],
       Icon: Smile,
+      redirectUrlFirst: "/create",
     },
 
     payment: {
@@ -100,6 +104,7 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
       details: "All (1)\nPaid (1)\nPending (0)",
       buttonText: ["CREATE", "OPEN"],
       Icon: DollarSign,
+      redirectUrlFirst: "/upload-pricing", 
     },
 
     // settings
@@ -110,6 +115,7 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
         "These photos are used in the static part of the treatment plan template, describing and showing Your clinic better for the patient",
       buttonText: ["UPLOAD", "OPEN DATABASE"],
       Icon: UploadCloud,
+      redirectUrlFirst: "/upload-clinic", 
     },
 
     dental: {
@@ -118,6 +124,7 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
       details: "Add photos describing best Your clinical care processes",
       buttonText: ["UPLOAD", "OPEN DATABASE"],
       Icon: UploadCloud,
+
     },
 
     team: {
@@ -127,6 +134,7 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
         "Whoever You want to be shown in the template, so that the patient better know Your team",
       buttonText: ["UPLOAD", "OPEN DATABASE"],
       Icon: UploadCloud,
+      redirectUrlFirst: "/upload-team", 
     },
 
     texts: {
@@ -136,10 +144,10 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
         "Whoever You want to be shown in the template, so that the patient better know Your team",
       buttonText: ["UPLOAD", "OPEN DATABASE"],
       Icon: UploadCloud,
+      redirectUrlFirst: "/upload-statix", 
     },
   };
 
-  // Проверка, существует ли данный вариант карточки
   const card = cardData[variant];
 
   if (!card) {
@@ -147,12 +155,18 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
     return null;
   }
 
-  const { title, description, buttonText, Icon, details, redirectUrl } = card;
+  const { title, description, buttonText, Icon, details, redirectUrlFirst, redirectUrlSecond } = card;
 
-  // Функция для обработки редиректа
-  const handleRedirect = () => {
-    if (redirectUrl) {
-      router.push(redirectUrl);
+  // Функции для обработки редиректа
+  const handleRedirectFirst = () => {
+    if (redirectUrlFirst) {
+      router.push(redirectUrlFirst);
+    }
+  };
+
+  const handleRedirectSecond = () => {
+    if (redirectUrlSecond) {
+      router.push(redirectUrlSecond);
     }
   };
 
@@ -189,7 +203,7 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
           <Button
             variant="outline"
             className="w-[150px] h-[40px] text-gray-500"
-            onClick={handleRedirect}
+            onClick={handleRedirectFirst}
           >
             {buttonText[0]}
           </Button>
@@ -198,12 +212,14 @@ export function ActionCard({ variant = "upload", className }: ActionCardProps) {
             <Button
               variant="outline"
               className="w-[150px] h-[40px] text-gray-500"
+              onClick={handleRedirectFirst}
             >
               {buttonText[0]}
             </Button>
             <Button
               variant="outline"
               className="w-[150px] h-[40px] text-gray-500"
+              onClick={handleRedirectSecond}
             >
               {buttonText[1]}
             </Button>

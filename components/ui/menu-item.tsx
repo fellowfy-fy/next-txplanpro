@@ -20,6 +20,7 @@ export const MenuItem: React.FC<Props> = ({
 }) => {
   return (
     <Button
+      variant="default"
       className={cn("flex my-3 gap-1 w-full justify-start", menuClassName)}
       onClick={onClick}
     >
