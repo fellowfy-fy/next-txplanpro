@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useMenuStore } from "@/store/activeMenuItem";
 import { useRouter } from "next/navigation";
+import { SidebarUser } from "./sidebar-user";
 
 interface Props {
   className?: string;
@@ -68,16 +69,17 @@ export const MenuList: React.FC<Props> = ({ className }) => {
     <div className={className}>
       {items.map((item) => (
         <MenuItem
-          title={item.title}
-          icon={item.icon}
-          className=""
-          menuClassName={`${activeItem === item.title ? "text-blue-500" : ""}`}
-          onClick={() => {
-            setActiveItem(item.title);
-            router.push(item.path);
-          }}
+        title={item.title}
+        icon={item.icon}
+        className=""
+        menuClassName={`${activeItem === item.title ? "text-blue-500" : ""}`}
+        onClick={() => {
+          setActiveItem(item.title);
+          router.push(item.path);
+        }}
         />
       ))}
+      <SidebarUser/>
     </div>
   );
 };
