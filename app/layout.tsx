@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Sidebar } from "@/components/shared/sidebar";
+import { Footer } from "@/components/shared/footer";
 
 import "./globals.css";
 
@@ -34,6 +35,7 @@ export default function RootLayout({
           <Sidebar />
         </div>
         {children}
+          <Footer />
       </body>
     </html>
   );

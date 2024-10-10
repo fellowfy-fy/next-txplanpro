@@ -12,6 +12,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { MenuList } from "./menu-list";
+import { SearchBox } from "../ui/searchbox";
 
 const SHEET_SIDES = ["left"] as const;
 
@@ -36,7 +37,7 @@ export function Sidebar() {
               </p>
             </div>
           </SheetTrigger>
-          <SheetContent side={side} className="bg-white w-[200px]">
+          <SheetContent side={side} className="bg-white w-[250px]">
             <SheetHeader>
               <SheetTitle>
                 <div className="flex justify-center items-center">
@@ -52,16 +53,13 @@ export function Sidebar() {
                   </p>
                 </div>
               </SheetTitle>
-              <SheetDescription>
-                <></>
-              </SheetDescription>
             </SheetHeader>
             <div className="grid gap-4 py-4">
+              <SearchBox variant="sidebar" className="mt-2"/>
               <MenuList />
             </div>
             <SheetFooter>
               <SheetClose asChild>
-                <></>
               </SheetClose>
             </SheetFooter>
           </SheetContent>
