@@ -1,0 +1,128 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider  = "postgresql"
+    url       = env("POSTGRES_URL")
+    directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+    id Int @id @default(autoincrement())
+
+    fullName String
+    email    String    @unique
+    password String
+    role     UserRole  @default(ADMIN)
+    verified DateTime?
+
+    provider   String?
+    providerId String?
+
+    userRoles UserBusinessRole[]
+    patients  Patient[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Business {
+    id Int @id @default(autoincrement())
+
+    name     String
+    address  String
+    phone    String
+    business BusinessType
+
+    images    BusinessImage[]
+    userRoles UserBusinessRole[]
+    patients  Patient[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model UserBusinessRole {
+    id Int @id @default(autoincrement())
+
+    role UserRole
+
+    user       User     @relation(fields: [userId], references: [id])
+    userId     Int
+    business   Business @relation(fields: [businessId], references: [id])
+    businessId Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Patient {
+    id Int @id @default(autoincrement())
+
+    fullName  String
+    birthDate DateTime
+    address   String
+
+    doctor   User @relation(fields: [doctorId], references: [id])
+    doctorId Int
+
+    business   Business @relation(fields: [businessId], references: [id])
+    businessId Int
+
+    images PatientImage[]
+    teeth  Tooth[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Tooth {
+    id         Int     @id @default(autoincrement())
+    number     Int
+    status     String
+    treatment  String
+    hasFilling Boolean
+    note       String?
+
+    patient   Patient @relation(fields: [patientId], references: [id])
+    patientId Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model BusinessImage {
+    id Int @id @default(autoincrement())
+
+    imageUrl String
+
+    business   Business @relation(fields: [businessId], references: [id])
+    businessId Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model PatientImage {
+    id Int @id @default(autoincrement())
+
+    imageUrl String
+
+    patient   Patient @relation(fields: [patientId], references: [id])
+    patientId Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+enum UserRole {
+    ADMIN
+    DOCTOR
+    ASSISTANT
+}
+
+enum BusinessType {
+    INDIVIDUAL
+    ENTERPRISE
+}
