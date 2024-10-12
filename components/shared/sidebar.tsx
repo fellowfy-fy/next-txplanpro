@@ -12,6 +12,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { MenuList } from "./menu-list";
+import { SearchBox } from "../ui/searchbox";
 
 const SHEET_SIDES = ["left"] as const;
 
