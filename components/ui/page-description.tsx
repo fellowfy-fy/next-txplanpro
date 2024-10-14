@@ -9,7 +9,11 @@ interface Props {
   text: string;
 }
 
-export const PageDescription: React.FC<Props> = ({ text, size = "sm", className }) => {
+export const PageDescription: React.FC<Props> = ({
+  text,
+  size = "sm",
+  className,
+}) => {
   const mapTagBySize = {
     xs: "h5",
     sm: "h4",
@@ -33,8 +37,8 @@ export const PageDescription: React.FC<Props> = ({ text, size = "sm", className 
     {
       className: clsx(
         mapClassNameBySize[size],
-        "text-[#A4A4A4]", // Цвет текста
-        "font-light", // Легкий вес текста
+        "text-[#A4A4A4]",
+        "font-light",
         className
       ),
     },

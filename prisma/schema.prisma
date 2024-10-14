@@ -22,6 +22,7 @@ model User {
 
     userRoles UserBusinessRole[]
     patients  Patient[]
+    images    BusinessImage[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -37,7 +38,7 @@ model Business {
 
     images    BusinessImage[]
     userRoles UserBusinessRole[]
-    patients  Patient[]
+    // patients  Patient[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -67,8 +68,8 @@ model Patient {
     doctor   User @relation(fields: [doctorId], references: [id])
     doctorId Int
 
-    business   Business @relation(fields: [businessId], references: [id])
-    businessId Int
+    // business   Business @relation(fields: [businessId], references: [id])
+    // businessId Int
 
     images PatientImage[]
     teeth  Tooth[]
@@ -99,6 +100,9 @@ model BusinessImage {
 
     business   Business @relation(fields: [businessId], references: [id])
     businessId Int
+
+    user   User @relation(fields: [userId], references: [id])
+    userId Int
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

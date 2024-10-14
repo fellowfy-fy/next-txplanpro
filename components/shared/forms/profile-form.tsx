@@ -14,6 +14,8 @@ import { Title } from "@/components/ui/title";
 import { FormInput } from "./form-input";
 import { Button } from "@/components/ui/button";
 import { updateUserInfo } from "@/app/actions";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 interface Props {
   data: User;
@@ -38,7 +40,7 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
         password: data.password,
       });
 
-      alert("Profile Updated!");
+      revalidatePath("/profile");
     } catch (error) {
       return console.log("UPDATE error: " + error);
     }
@@ -48,6 +50,7 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
     signOut({
       callbackUrl: "/",
     });
+    redirect("/");
   };
 
   return (
