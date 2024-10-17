@@ -13,6 +13,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.670.0",
     "@aws-sdk/s3-request-presigner": "^3.670.0",
+    "@dnd-kit/core": "^6.1.0",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.20.0",
     "@radix-ui/react-accordion": "^1.2.0",
@@ -35,6 +36,7 @@
     "lucide-react": "^0.445.0",
     "next": "14.2.13",
     "next-auth": "^4.24.8",
+    "nodemailer": "^6.9.15",
     "prisma": "^5.20.0",
     "puppeteer": "^23.4.0",
     "react": "^18",
