@@ -1,11 +1,11 @@
 // components/shared/diagnoses.ts
 
-export interface Diagnosis {
+export interface DiagnosisProps {
     label: string;
-    color: string; // Tailwind CSS цвет
+    color: string; 
   }
   
-  export const diagnoses: Diagnosis[] = [
+  export const diagnoses: DiagnosisProps[] = [
     { label: "Extracted", color: "#FF0000" },               // Красный
     { label: "Tooth Crown", color: "#0000FF" },            // Синий
     { label: "Implant Crown", color: "#008000" },          // Зелёный

@@ -3,84 +3,107 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Teeth, { ToothInfo } from "../shared/teeth-import";
-import { diagnoses, Diagnosis } from "../shared/diagnoses";
+import { diagnoses, DiagnosisProps } from "../../constants/diagnoses";
+import { TreatmentProps, treatments } from "../../constants/treatments";
+import { ToothData } from "./create-view";
 
-const TeethDiagram: React.FC = () => {
+interface TeethDiagramProps {
+  mode: "diagnosis" | "treatment";
+  teethData: ToothData[];
+  onTeethDataChange: (updatedTeethData: ToothData[]) => void;
+}
+
+const TeethDiagram: React.FC<TeethDiagramProps> = ({
+  mode,
+  teethData,
+  onTeethDataChange,
+}) => {
   const { upperTeeth, lowerTeeth } = Teeth;
 
-  // Состояние для выбранного диагноза
-  const [selectedDiagnosis, setSelectedDiagnosis] = useState<Diagnosis | null>(
-    null
-  );
+  const [selectedItem, setSelectedItem] = useState<
+    DiagnosisProps | TreatmentProps | null
+  >(null);
 
-  // Состояние для диагнозов каждого зуба
-  const [teethDiagnoses, setTeethDiagnoses] = useState<{
-    [key: number]: Diagnosis[];
-  }>({});
-
-  // Обработчик выбора диагноза
-  const handleDiagnosisSelect = (diagnosis: Diagnosis) => {
-    setSelectedDiagnosis((prev) =>
-      prev?.label === diagnosis.label ? null : diagnosis
-    );
+  // Обработчик выбора элемента (диагноза или лечения)
+  const handleItemSelect = (item: DiagnosisProps | TreatmentProps) => {
+    setSelectedItem((prev) => (prev?.label === item.label ? null : item));
   };
 
   // Обработчик клика по зубу
   const handleToothClick = (toothNumber: number) => {
-    if (!selectedDiagnosis) return;
+    if (!selectedItem) return;
 
-    setTeethDiagnoses((prev) => {
-      const currentDiagnoses = prev[toothNumber] || [];
-      // Если выбран диагноз "Default", сбрасываем все диагнозы
-      if (selectedDiagnosis.label === "Default") {
-        return { ...prev, [toothNumber]: [] };
-      }
+    const currentTooth = teethData.find(
+      (tooth) => tooth.number === toothNumber
+    ) || { number: toothNumber, diagnosis: [], treatments: [] }; // Если зуба еще нет, создаем новый объект с пустыми массивами
 
-      // Избегаем дублирования диагнозов
-      if (
-        currentDiagnoses.some((diag) => diag.label === selectedDiagnosis.label)
-      ) {
-        return prev;
-      }
-      return {
-        ...prev,
-        [toothNumber]: [...currentDiagnoses, selectedDiagnosis],
+    let updatedTooth: ToothData = { ...currentTooth };
+
+    if (mode === "diagnosis") {
+      // Работаем только с диагнозами
+      const updatedDiagnosis = [...currentTooth.diagnosis, selectedItem!.label];
+      updatedTooth = {
+        ...currentTooth,
+        diagnosis: updatedDiagnosis, // Обновляем диагноз
+        treatments: currentTooth.treatments || [], // Убедимся, что treatments всегда массив
       };
-    });
-    console.log(toothNumber, teethDiagnoses);
+    } else if (mode === "treatment") {
+      // Работаем только с лечением
+      const updatedTreatments = [
+        ...currentTooth.treatments,
+        selectedItem!.label,
+      ];
+      updatedTooth = {
+        ...currentTooth,
+        diagnosis: currentTooth.diagnosis || [], // Убедимся, что diagnosis всегда массив
+        treatments: updatedTreatments, // Обновляем лечение
+      };
+    }
+
+    // Обновляем данные зубов
+    const updatedTeethData = teethData.some(
+      (tooth) => tooth.number === toothNumber
+    )
+      ? teethData.map((tooth) =>
+          tooth.number === toothNumber ? updatedTooth : tooth
+        )
+      : [...teethData, updatedTooth]; // Если зуба еще не было, добавляем его в массив
+
+    onTeethDataChange(updatedTeethData);
   };
 
+  // В зависимости от режима показываем либо диагнозы, либо лечение
+  const items = mode === "diagnosis" ? diagnoses : treatments;
+
   return (
-    <div className="p-4 border border-gray-300 rounded-lg"> {/* Тонкая рамка для всего компонента */}
+    <div className="p-4 border border-gray-300 rounded-lg">
       <div className="flex">
-        {/* Кнопки диагнозов */}
+        {/* Список элементов для выбора */}
         <div className="grid grid-cols-2 gap-2 mr-6">
-          {diagnoses.map((diagnosis) => (
-            <button
-              key={diagnosis.label}
+          {items.map((item) => (
+            <div
+              key={item.label}
               className={`px-4 py-2 rounded border text-left ${
-                selectedDiagnosis?.label === diagnosis.label
-                  ? diagnosis.label === "Default"
+                selectedItem?.label === item.label
+                  ? item.label === "Default"
                     ? `bg-gray-500 text-white`
                     : `border-transparent text-white`
                   : `bg-gray-200 hover:bg-gray-300`
               }`}
               style={
-                selectedDiagnosis?.label === diagnosis.label &&
-                diagnosis.label !== "Default"
-                  ? { backgroundColor: diagnosis.color }
+                selectedItem?.label === item.label && item.label !== "Default"
+                  ? { backgroundColor: item.color }
                   : {}
               }
-              onClick={() => handleDiagnosisSelect(diagnosis)}
+              onClick={() => handleItemSelect(item)}
             >
-              {diagnosis.label}
-            </button>
+              {item.label}
+            </div>
           ))}
         </div>
 
         {/* Диаграмма зубов */}
         <div className="flex-grow rounded-lg p-4">
-          {/* Верхние зубы */}
           <div className="flex justify-center items-baseline mb-4">
             {upperTeeth.map((tooth: ToothInfo) => (
               <div
@@ -97,21 +120,43 @@ const TeethDiagram: React.FC = () => {
                   width={50}
                   height={50}
                 />
-                {/* Оверлеи диагнозов */}
-                {teethDiagnoses[tooth.number]?.map((diag, idx) => (
-                  <div
-                    key={idx}
-                    className="absolute inset-0 opacity-50"
-                    style={{
-                      backgroundColor: diag.color,
-                    }}
-                  ></div>
-                ))}
+                {mode === "diagnosis"
+                  ? teethData
+                      .find((t) => t.number === tooth.number)
+                      ?.diagnosis?.map((diagnosisLabel, idx) => {
+                        const diagnosis = diagnoses.find(
+                          (d) => d.label === diagnosisLabel
+                        );
+                        return (
+                          diagnosis && (
+                            <div
+                              key={idx}
+                              className="absolute inset-0 opacity-50"
+                              style={{ backgroundColor: diagnosis.color }}
+                            ></div>
+                          )
+                        );
+                      })
+                  : teethData
+                      .find((t) => t.number === tooth.number)
+                      ?.treatments?.map((treatmentLabel, idx) => {
+                        const treatment = treatments.find(
+                          (t) => t.label === treatmentLabel
+                        );
+                        return (
+                          treatment && (
+                            <div
+                              key={idx}
+                              className="absolute inset-0 opacity-50"
+                              style={{ backgroundColor: treatment.color }}
+                            ></div>
+                          )
+                        );
+                      })}
               </div>
             ))}
           </div>
 
-          {/* Нижние зубы */}
           <div className="flex justify-center items-start">
             {lowerTeeth.map((tooth: ToothInfo) => (
               <div
@@ -128,16 +173,39 @@ const TeethDiagram: React.FC = () => {
                   width={50}
                   height={50}
                 />
-                {/* Оверлеи диагнозов */}
-                {teethDiagnoses[tooth.number]?.map((diag, idx) => (
-                  <div
-                    key={idx}
-                    className="absolute inset-0 opacity-50"
-                    style={{
-                      backgroundColor: diag.color,
-                    }}
-                  ></div>
-                ))}
+                {mode === "diagnosis"
+                  ? teethData
+                      .find((t) => t.number === tooth.number)
+                      ?.diagnosis?.map((diagnosisLabel, idx) => {
+                        const diagnosis = diagnoses.find(
+                          (d) => d.label === diagnosisLabel
+                        );
+                        return (
+                          diagnosis && (
+                            <div
+                              key={idx}
+                              className="absolute inset-0 opacity-50"
+                              style={{ backgroundColor: diagnosis.color }}
+                            ></div>
+                          )
+                        );
+                      })
+                  : teethData
+                      .find((t) => t.number === tooth.number)
+                      ?.treatments?.map((treatmentLabel, idx) => {
+                        const treatment = treatments.find(
+                          (t) => t.label === treatmentLabel
+                        );
+                        return (
+                          treatment && (
+                            <div
+                              key={idx}
+                              className="absolute inset-0 opacity-50"
+                              style={{ backgroundColor: treatment.color }}
+                            ></div>
+                          )
+                        );
+                      })}
               </div>
             ))}
           </div>

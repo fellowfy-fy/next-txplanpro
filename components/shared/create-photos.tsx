@@ -1,27 +1,19 @@
 "use client";
 
-import { useCallback, useState } from "react";
 import { DragDrop } from "../ui/drag-drop";
 import ElementGrid from "./element-grid";
+import { TPatientFormValues } from "@/constants/patient-schema";
 
-const Photos = () => {
-  const [uploadedFiles, setUploadedFiles] = useState<{
-    [key: string]: File | null;
-  }>({
-    upper_occlusal: null,
-    lower_occlusal: null,
-    side_left: null,
-    side_right: null,
-    panoramic_xray: null,
-  });
+interface PhotosProps {
+  uploadedFiles: TPatientFormValues["uploadedFiles"];
 
-  const handleFileUpload = useCallback((variant: string, file: File | null) => {
-    setUploadedFiles((prev) => ({
-      ...prev,
-      [variant]: file,
-    }));
-  }, []);
+  onFileUpload: (
+    variant: keyof TPatientFormValues["uploadedFiles"],
+    file: File | null
+  ) => void;
+}
 
+const Photos = ({ uploadedFiles, onFileUpload }: PhotosProps) => {
   return (
     <div className="p-6">
       <h3 className="text-lg font-bold mb-4">Uploaded Photos</h3>
@@ -30,22 +22,22 @@ const Photos = () => {
         <DragDrop
           variant="upper_occlusal"
           file={uploadedFiles.upper_occlusal}
-          onFileUpload={handleFileUpload}
+          onFileUpload={onFileUpload}
         />
         <DragDrop
           variant="lower_occlusal"
           file={uploadedFiles.lower_occlusal}
-          onFileUpload={handleFileUpload}
+          onFileUpload={onFileUpload}
         />
         <DragDrop
           variant="side_left"
           file={uploadedFiles.side_left}
-          onFileUpload={handleFileUpload}
+          onFileUpload={onFileUpload}
         />
         <DragDrop
           variant="side_right"
           file={uploadedFiles.side_right}
-          onFileUpload={handleFileUpload}
+          onFileUpload={onFileUpload}
         />
       </ElementGrid>
 
@@ -53,7 +45,7 @@ const Photos = () => {
         variant="panoramic_xray"
         className="w-full mt-5"
         file={uploadedFiles.panoramic_xray}
-        onFileUpload={handleFileUpload}
+        onFileUpload={onFileUpload}
       />
     </div>
   );

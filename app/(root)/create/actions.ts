@@ -1,7 +1,6 @@
 "use server"
 
 import { prisma } from "@/prisma/prisma-client";
-import { Prisma } from "@prisma/client";
 
 interface CreatePatientProps {
   fullName: string,

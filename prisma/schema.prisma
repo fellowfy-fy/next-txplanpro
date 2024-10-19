@@ -79,12 +79,11 @@ model Patient {
 }
 
 model Tooth {
-    id         Int     @id @default(autoincrement())
-    number     Int
-    status     String
-    treatment  String
-    hasFilling Boolean
-    note       String?
+    id        Int      @id @default(autoincrement())
+    number    Int
+    diagnoses String[]
+    treatment String[]
+    note      String?
 
     patient   Patient @relation(fields: [patientId], references: [id])
     patientId Int

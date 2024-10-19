@@ -5,7 +5,7 @@ import { PageDescription } from "@/components/ui/page-description";
 
 export default function Create() {
   return (
-    <Container className="mt-7">
+    <Container>
       <PageDescription
         text="Create a new complex or local segment treatment plan for Your patient"
         size="sm"
