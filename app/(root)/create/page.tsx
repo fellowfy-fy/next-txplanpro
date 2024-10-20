@@ -11,24 +11,27 @@ export default function Create() {
   const router = useRouter();
 
   const patient = {
-  name: "Jane Doe",
+    name: "Jane Doe",
   };
 
   return (
     <Container>
       <Title text="Patient: Jane Doe" size="lg" className="font-bold" />
-      <PageDescription text="Upload patient diagnostic data, create treatment plan or a DSD project" size="sm" className="pb-4"/>
+      <PageDescription
+        text="Upload patient diagnostic data, create treatment plan or a DSD project"
+        size="sm"
+        className="pb-4"
+      />
 
-      <SearchBox/>
+      {/* <SearchBox/> */}
 
       <Title text="Create your new..." size="lg" className="font-bold pt-3" />
-      
+
       <ElementGrid>
         <ActionCard variant="complex" />
         <ActionCard variant="dsd" />
         <ActionCard variant="local" />
       </ElementGrid>
-
     </Container>
   );
 }

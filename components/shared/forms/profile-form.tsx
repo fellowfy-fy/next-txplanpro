@@ -54,7 +54,7 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <Container className="my-10">
+    <Container>
       <Title text={`${data.fullName}`} size="md" className="font-bold" />
 
       <FormProvider {...form}>

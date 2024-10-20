@@ -63,12 +63,12 @@ export const createPatient = async (
 const allowedFileTypes = [
     "image/jpeg",
     "image/png",
-    "image/gif",
-    "image/webp",
-    "image/svg+xml",
-    "image/bmp",
-    "image/tiff",
-    "image/x-icon"
+    // "image/gif",
+    // "image/webp",
+    // "image/svg+xml",
+    // "image/bmp",
+    // "image/tiff",
+    // "image/x-icon"
   ];
     
     //   const maxFileSize = 1048576 * 10 
@@ -85,6 +85,7 @@ fileType: string
 fileSize: number
 checksum: string
 patientId: number
+key: string
 }
 
 export const getSignedURL = async ({
@@ -92,6 +93,7 @@ export const getSignedURL = async ({
         fileSize,
         checksum,
         patientId,
+        key
       }: GetSignedURLParams): Promise<SignedURLResponse> => {
       
       
@@ -115,12 +117,11 @@ export const getSignedURL = async ({
           { expiresIn: 60 } // 60 seconds
         )
       
-        console.log({ success: url })
-      
         const results = await prisma.patientImage.create({
             data: {
               imageUrl: url.split("?")[0],
               patientId,
+              type: key
             },
           });
       

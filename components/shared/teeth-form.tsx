@@ -41,23 +41,30 @@ const TeethDiagram: React.FC<TeethDiagramProps> = ({
 
     if (mode === "diagnosis") {
       // Работаем только с диагнозами
-      const updatedDiagnosis = [...currentTooth.diagnosis, selectedItem!.label];
-      updatedTooth = {
-        ...currentTooth,
-        diagnosis: updatedDiagnosis, // Обновляем диагноз
-        treatments: currentTooth.treatments || [], // Убедимся, что treatments всегда массив
-      };
+      if (!currentTooth.diagnosis.includes(selectedItem!.label)) {
+        const updatedDiagnosis = [
+          ...currentTooth.diagnosis,
+          selectedItem!.label,
+        ];
+        updatedTooth = {
+          ...currentTooth,
+          diagnosis: updatedDiagnosis, // Обновляем диагноз
+          treatments: currentTooth.treatments || [], // Убедимся, что treatments всегда массив
+        };
+      }
     } else if (mode === "treatment") {
-      // Работаем только с лечением
-      const updatedTreatments = [
-        ...currentTooth.treatments,
-        selectedItem!.label,
-      ];
-      updatedTooth = {
-        ...currentTooth,
-        diagnosis: currentTooth.diagnosis || [], // Убедимся, что diagnosis всегда массив
-        treatments: updatedTreatments, // Обновляем лечение
-      };
+      if (!currentTooth.treatments.includes(selectedItem!.label)) {
+        // Работаем только с лечением
+        const updatedTreatments = [
+          ...currentTooth.treatments,
+          selectedItem!.label,
+        ];
+        updatedTooth = {
+          ...currentTooth,
+          diagnosis: currentTooth.diagnosis || [], // Убедимся, что diagnosis всегда массив
+          treatments: updatedTreatments, // Обновляем лечение
+        };
+      }
     }
 
     // Обновляем данные зубов

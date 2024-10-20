@@ -26,13 +26,6 @@ export const TreatmentPlan: React.FC<TreatmentPlanProps> = ({
         teethData={teethData} // Передаем данные зубов
         onTeethDataChange={handleTeethDataChange} // Обновляем данные о лечении зубов
       />
-
-      {/* Кнопка сохранения */}
-      <div className="flex justify-center gap-4 mt-6">
-        {/* <Button variant="outline" className="px-6 py-2">
-          Save Treatment Plan
-        </Button> */}
-      </div>
     </div>
   );
 };

@@ -9,40 +9,41 @@ import {
   SquarePlus,
   User,
   CircleHelp,
+  UserRoundPen,
 } from "lucide-react";
 import { useMenuStore } from "@/store/activeMenuItem";
-import { useRouter } from "next/navigation";
 import { SidebarUser } from "./sidebar-user";
+import { useRouter } from "next/navigation";
 
 interface Props {
   className?: string;
 }
 
 const items = [
-  {
-    title: "Dashboard",
-    icon: Grid2x2,
-    path: "/dashboard",
-  },
-  {
-    title: "All Plans",
-    icon: Notebook,
-    path: "/all-plans",
-  },
-  {
-    title: "Ready to Present",
-    icon: Megaphone,
-    path: "/ready-to-present",
-  },
-  {
-    title: "To-do Plans",
-    icon: ListTodo,
-    path: "/todo-plans",
-  },
+  // {
+  //   title: "Dashboard",
+  //   icon: Grid2x2,
+  //   path: "/dashboard",
+  // },
+  // {
+  //   title: "All Plans",
+  //   icon: Notebook,
+  //   path: "/all-plans",
+  // },
+  // {
+  //   title: "Ready to Present",
+  //   icon: Megaphone,
+  //   path: "/ready-to-present",
+  // },
+  // {
+  //   title: "To-do Plans",
+  //   icon: ListTodo,
+  //   path: "/todo-plans",
+  // },
   {
     title: "Create",
     icon: SquarePlus,
-    path: "/create",
+    path: "/create-plan",
   },
   {
     title: "Patients",
@@ -54,11 +55,16 @@ const items = [
     icon: Settings,
     path: "/settings",
   },
-    {
-    title: "Support",
-    icon: CircleHelp,
-    path: "/support",
+  {
+    title: "Profile",
+    icon: UserRoundPen,
+    path: "/profile",
   },
+  //   {
+  //   title: "Support",
+  //   icon: CircleHelp,
+  //   path: "/support",
+  // },
 ];
 
 export const MenuList: React.FC<Props> = ({ className }) => {
@@ -69,17 +75,18 @@ export const MenuList: React.FC<Props> = ({ className }) => {
     <div className={className}>
       {items.map((item) => (
         <MenuItem
-        title={item.title}
-        icon={item.icon}
-        className=""
-        menuClassName={`${activeItem === item.title ? "text-blue-500" : ""}`}
-        onClick={() => {
-          setActiveItem(item.title);
-          router.push(item.path);
-        }}
+          key={item.title}
+          title={item.title}
+          icon={item.icon}
+          className=""
+          menuClassName={`${activeItem === item.title ? "text-blue-500" : ""}`}
+          onClick={() => {
+            setActiveItem(item.title);
+            router.push(item.path);
+          }}
         />
       ))}
-      <SidebarUser/>
+      {/* <SidebarUser /> */}
     </div>
   );
 };

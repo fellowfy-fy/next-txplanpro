@@ -1,34 +1,37 @@
-"use client";
-import { Title } from "@/components/ui/title";
 import { PageDescription } from "@/components/ui/page-description";
-import { useRouter } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import ElementGrid from "@/components/shared/element-grid";
-import { ActionCard } from "@/components/shared/action-cards";
-import { SearchBox } from "@/components/ui/searchbox";
+import { PatientCard } from "@/components/shared/patient-card";
+import React from "react";
+import { Title } from "@/components/ui/title";
+import { getUserSession } from "@/lib/get-user-session";
+import { prisma } from "@/prisma/prisma-client";
 
-export default function Patients() {
-  const router = useRouter();
+export default async function Patients() {
+  const session = await getUserSession();
+  const doctorName = session?.name;
 
-  const patient = {
-  name: "Jane Doe",
-  };
+  const patients = await prisma.patient.findMany({
+    where: { doctorId: Number(session?.id) },
+  });
 
   return (
     <Container>
-      <PageDescription text="Upload patient diagnostic data, create treatment plan or a DSD project" size="sm" className="pb-4"/>
+      <PageDescription
+        text="Upload patient diagnostic data, create treatment plan or a DSD project"
+        size="sm"
+        className="pb-4"
+      />
 
-      <SearchBox/>
+      {/* <SearchBox/> */}
 
-      <Title text="Patient: Jane Doe" size="lg" className="font-bold pt-3" />
-      
+      <Title text="Patients" size="lg" className="font-bold pt-3" />
+
       <ElementGrid>
-        <ActionCard variant="upload" />
-        <ActionCard variant="treatment" />
-        <ActionCard variant="dsdp" />
-        <ActionCard variant="payment" />
+        {doctorName && (
+          <PatientCard doctorName={doctorName} patients={patients} />
+        )}
       </ElementGrid>
-
     </Container>
   );
 }

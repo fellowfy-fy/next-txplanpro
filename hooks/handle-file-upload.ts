@@ -2,12 +2,13 @@ import { getSignedURL } from "@/app/(root)/create-plan/actions";
 import { computeSHA256 } from "@/lib/computeSHA256";
 
 
-export const handleFileUpload = async (file: File, patientId: number) => {
+export const handleFileUpload = async (file: File, patientId: number, key: string) => {
     const signedURLResult = await getSignedURL({
       fileSize: file.size,
       fileType: file.type,
       checksum: await computeSHA256(file),
-      patientId
+      patientId,
+      key
     });
   
     if (signedURLResult.failure != undefined) {

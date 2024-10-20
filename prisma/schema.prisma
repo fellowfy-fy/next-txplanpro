@@ -111,6 +111,7 @@ model PatientImage {
     id Int @id @default(autoincrement())
 
     imageUrl String
+    type     String
 
     patient   Patient @relation(fields: [patientId], references: [id])
     patientId Int
