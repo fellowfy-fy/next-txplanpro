@@ -1,18 +1,18 @@
 import React from "react";
 import { MenuItem } from "../ui/menu-item";
 import {
-  Grid2x2,
-  Notebook,
-  Megaphone,
-  ListTodo,
+  // Grid2x2,
+  // Notebook,
+  // Megaphone,
+  // ListTodo,
   Settings,
   SquarePlus,
   User,
-  CircleHelp,
+  // CircleHelp,
   UserRoundPen,
 } from "lucide-react";
 import { useMenuStore } from "@/store/activeMenuItem";
-import { SidebarUser } from "./sidebar-user";
+// import { SidebarUser } from "./sidebar-user";
 import { useRouter } from "next/navigation";
 
 interface Props {

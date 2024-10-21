@@ -1,13 +1,13 @@
 "use client";
-import { cn } from "@/lib/utils";
+// import { cn } from "@/lib/utils";
 import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
+  // CardHeader,
 } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+// import { useState } from "react";
 import { Patient } from "@prisma/client";
 import { Button } from "../ui/button";
 
@@ -18,12 +18,12 @@ interface PatientCardProps {
 }
 
 export const PatientCard: React.FC<PatientCardProps> = ({
-  className,
+  // className,
   patients,
   doctorName,
 }) => {
   const router = useRouter();
-  const [isHovered, setIsHovered] = useState(false);
+  // const [isHovered, setIsHovered] = useState(false);
 
   return (
     <Card>

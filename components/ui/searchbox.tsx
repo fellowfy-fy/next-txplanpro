@@ -3,7 +3,6 @@ import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import clsx from "clsx";
-import { Patient } from "@prisma/client";
 
 type SearchBoxVariant = "sidebar" | "main" | "compact" | "large";
 

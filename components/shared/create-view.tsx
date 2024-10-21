@@ -54,6 +54,7 @@ export function CreateView() {
   const onClickPatient = (patient: PatientDTO) => {
     return async (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (patient) {
+        console.log(event);
         setFocused(false);
 
         methods.setValue("fullName", patient.fullName);
@@ -171,7 +172,6 @@ export function CreateView() {
       </div>
 
       <NextPrevTab
-        activeTab={activeTab}
         goToNextTab={() =>
           setActiveTab(tabs[(tabs.indexOf(activeTab) + 1) % tabs.length])
         }

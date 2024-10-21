@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Bookmark, Circle } from "lucide-react"; // Импорт иконок из lucide
-import clsx from "clsx";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation"; // Импорт роутера
 
@@ -21,20 +20,25 @@ interface DashboardCreateProps {
   className?: string;
 }
 
-export function DashboardCreate({ variant = "txplan", className }: DashboardCreateProps) {
+export function DashboardCreate({
+  variant = "txplan",
+  className,
+}: DashboardCreateProps) {
   const router = useRouter(); // Инициализация роутера
 
   // Логика вариативности карточек
   const cardData = {
     txplan: {
       title: "CREATE NEW TxPlan",
-      description: "Create a treatment plan for a new or existing patient (mostly for local cases)",
+      description:
+        "Create a treatment plan for a new or existing patient (mostly for local cases)",
       buttonText: "Create Plan",
       Icon: Circle,
     },
     dsd: {
       title: "CREATE NEW Digital Smile Design project",
-      description: "Start a new plan from a DSD project (mostly for complex cases)",
+      description:
+        "Start a new plan from a DSD project (mostly for complex cases)",
       buttonText: "Create DSD",
       Icon: Bookmark,
     },
@@ -57,11 +61,16 @@ export function DashboardCreate({ variant = "txplan", className }: DashboardCrea
           </div>
         </div>
         <div>
-          <CardTitle className="text-xl font-bold text-left pb-2">{title}</CardTitle>
-          <CardDescription className="text-gray-500 text-lg text-left">{description}</CardDescription>
+          <CardTitle className="text-xl font-bold text-left pb-2">
+            {title}
+          </CardTitle>
+          <CardDescription className="text-gray-500 text-lg text-left">
+            {description}
+          </CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="flex-grow"></CardContent> {/* Заполнение пространства */}
+      <CardContent className="flex-grow"></CardContent>{" "}
+      {/* Заполнение пространства */}
       <CardFooter className="text-left">
         <Button
           variant="outline"

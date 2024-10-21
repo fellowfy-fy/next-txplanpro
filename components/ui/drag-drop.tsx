@@ -2,7 +2,7 @@
 
 import React, { useCallback, useState } from "react";
 import { cn } from "@/lib/utils";
-import { DragDropVariant, DragAndDropData } from "@/constants/dnd-data";
+import { DragAndDropData } from "@/constants/dnd-data";
 import { TPatientFormValues } from "@/constants/patient-schema";
 
 interface DragDropProps {

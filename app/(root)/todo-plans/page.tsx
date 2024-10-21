@@ -32,12 +32,11 @@ export default function ToDoPlans() {
       </div>
 
       <ElementGrid>
-        <PatientCard />
-        <PatientCard />
-        <PatientCard />
-        <PatientCard />
+        <PatientCard patients={[]} doctorName={""} />
+        <PatientCard patients={[]} doctorName={""} />
+        <PatientCard patients={[]} doctorName={""} />
+        <PatientCard patients={[]} doctorName={""} />
       </ElementGrid>
-
     </Container>
   );
 }

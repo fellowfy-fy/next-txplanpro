@@ -5,7 +5,6 @@ import {
   formLoginSchema,
 } from "../../../constants/register-schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Title } from "@/components/ui/title";
 import { FormInput } from "./form-input";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
@@ -15,7 +14,7 @@ interface Props {
   onClose?: VoidFunction;
 }
 
-export const LoginForm: React.FC<Props> = ({ onClose }) => {
+export const LoginForm: React.FC<Props> = () => {
   const router = useRouter();
   const form = useForm<TFormLoginValues>({
     resolver: zodResolver(formLoginSchema),

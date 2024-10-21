@@ -2,13 +2,11 @@ import React from "react";
 import { Button } from "../ui/button";
 
 interface NextPrevTabProps {
-  activeTab: string;
   goToNextTab: () => void;
   goToPreviousTab: () => void;
 }
 
 export const NextPrevTab: React.FC<NextPrevTabProps> = ({
-  activeTab,
   goToNextTab,
   goToPreviousTab,
 }) => {

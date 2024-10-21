@@ -1,4 +1,3 @@
-import Teeth from '@/components/shared/teeth-import';
 import { prisma } from '@/prisma/prisma-client';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -27,6 +26,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json(patients);
 } 
   catch(err) {
+    console.log(err)
     return NextResponse.json({ error: 'Failed to fetch patients' }, { status: 500 });
   }
 }

@@ -1,18 +1,14 @@
 "use client";
 import { Title } from "@/components/ui/title";
 import { PageDescription } from "@/components/ui/page-description";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import ElementGrid from "@/components/shared/element-grid";
 import { ActionCard } from "@/components/shared/action-cards";
-import { SearchBox } from "@/components/ui/searchbox";
+// import { SearchBox } from "@/components/ui/searchbox";
 
 export default function Create() {
-  const router = useRouter();
-
-  const patient = {
-    name: "Jane Doe",
-  };
+  // const router = useRouter();
 
   return (
     <Container>

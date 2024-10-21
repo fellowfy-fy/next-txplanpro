@@ -12,7 +12,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { MenuList } from "./menu-list";
-import { SearchBox } from "../ui/searchbox";
+// import { SearchBox } from "../ui/searchbox";
 
 export function Sidebar() {
   return (

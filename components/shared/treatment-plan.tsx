@@ -2,7 +2,6 @@
 
 import React from "react";
 import TeethDiagram from "./teeth-form";
-import { Button } from "@/components/ui/button";
 import { ToothData } from "./create-view";
 
 interface TreatmentPlanProps {
