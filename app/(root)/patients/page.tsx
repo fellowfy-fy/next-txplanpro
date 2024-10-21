@@ -10,10 +10,11 @@ import { prisma } from "@/prisma/prisma-client";
 export default async function Patients() {
   const session = await getUserSession();
   const doctorName = session?.name;
-
-  const patients = await prisma.patient.findMany({
-    where: { doctorId: Number(session?.id) },
-  });
+  const patients = session
+    ? await prisma.patient.findMany({
+        where: { doctorId: Number(session?.id) },
+      })
+    : [];
 
   return (
     <Container>
