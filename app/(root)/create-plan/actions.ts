@@ -6,10 +6,8 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { ToothData } from "@/components/shared/create-view";
 import crypto from "crypto";
 
-// Инициализация Prisma клиента
 const prisma = new PrismaClient();
 
-// Инициализация S3 клиента
 const s3Client = new S3Client({
   region: process.env.AWS_BUCKET_REGION!,
   credentials: {
@@ -18,10 +16,8 @@ const s3Client = new S3Client({
   },
 });
 
-// Генерация уникального имени файла
 const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 
-// Функция для загрузки файла в S3 и сохранения ссылки в базу данных
 export const createPatient = async (
   { fullName, address, birthDate, teethData, doctorId }: 
   { fullName: string, address: string, birthDate: string, teethData: ToothData[], doctorId: number },
@@ -84,7 +80,9 @@ type GetSignedURLParams = {
 fileType: string
 fileSize: number
 checksum: string
-patientId: number
+patientId?: number
+doctorId?: number
+businessImage?: boolean
 key: string
 }
 
@@ -93,6 +91,8 @@ export const getSignedURL = async ({
         fileSize,
         checksum,
         patientId,
+        doctorId,
+        businessImage,
         key
       }: GetSignedURLParams): Promise<SignedURLResponse> => {
       
@@ -116,15 +116,40 @@ export const getSignedURL = async ({
           putObjectCommand,
           { expiresIn: 60 } // 60 seconds
         )
-      
-        const results = await prisma.patientImage.create({
+        
+        if (patientId) {
+          const results = await prisma.patientImage.create({
             data: {
               imageUrl: url.split("?")[0],
               patientId,
               type: key
             },
           });
+
+          return { success: { url, id: results.id } }
+        }
+
+        if (doctorId && businessImage) {
+          const results = await prisma.businessImage.upsert({
+            where: {
+              doctorId_type: {
+                doctorId: doctorId,
+                type: key,
+              },
+            },
+            update: {
+              imageUrl: url.split("?")[0],
+            },
+            create: {
+              imageUrl: url.split("?")[0],
+              doctorId: doctorId,
+              type: key,
+            },
+          });
+
+          return { success: { url, id: results.id } }
+        }
       
-        return { success: { url, id: results.id } }
+        return { failure: "Nothing has been loaded to s3 bucket" }
       }
       

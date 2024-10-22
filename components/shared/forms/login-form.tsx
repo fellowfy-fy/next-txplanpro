@@ -36,7 +36,7 @@ export const LoginForm: React.FC<Props> = () => {
         throw Error();
       }
 
-      router.push("/dashboard");
+      router.push("/create-plan");
     } catch (error) {
       console.error("Error [LOGIN]", error);
     }

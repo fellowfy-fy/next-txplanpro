@@ -49,9 +49,11 @@ export const PatientCard: React.FC<PatientCardProps> = ({
               <p className="text-xl font-bold leading-none pb-2">
                 Patient: {patient.fullName}
               </p>
-              <p className="text-sm text-muted-foreground">
-                {String(patient.birthDate)}
-              </p>
+              {new Date(patient.birthDate).toLocaleDateString("en-GB", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
               <p className="text-sm text-muted-foreground">{patient.address}</p>
             </div>
           </div>

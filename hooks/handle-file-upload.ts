@@ -1,17 +1,46 @@
 import { getSignedURL } from "@/app/(root)/create-plan/actions";
 import { computeSHA256 } from "@/lib/computeSHA256";
 
+interface HandleFileUploadProps {
+  file: File;
+  key: string;
+  patientId?: number;
+  doctorId?: number;
+  businessImage?: boolean;
+}
 
-export const handleFileUpload = async (file: File, patientId: number, key: string) => {
-    const signedURLResult = await getSignedURL({
+export const handleFileUpload = async ({
+  file,
+  key,
+  patientId,
+  doctorId,
+  businessImage,
+}: HandleFileUploadProps) => {
+  let signedURLResult;
+
+  if (patientId) {
+    signedURLResult = await getSignedURL({
       fileSize: file.size,
       fileType: file.type,
       checksum: await computeSHA256(file),
       patientId,
       key
     });
-  
-    if (signedURLResult.failure != undefined) {
+  } else if (doctorId) {
+    signedURLResult = await getSignedURL({
+      fileSize: file.size,
+      fileType: file.type,
+      checksum: await computeSHA256(file),
+      doctorId,
+      businessImage,
+      key
+    });
+  } else {
+    signedURLResult = { failure: "Something went wrong [FILE UPLOAD ERROR]" };
+  }
+
+
+    if (signedURLResult.failure != undefined && signedURLResult) {
       throw new Error(signedURLResult.failure);
     }
   

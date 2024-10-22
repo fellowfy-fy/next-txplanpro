@@ -20,6 +20,8 @@ import { Patient, PatientImage, Tooth } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { convertUrlsToFiles } from "./convert-urls-to-file";
 import { PatientSubmitInfo } from "./patient-submit-info";
+import { useRouter } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export interface ToothData {
   number: number;
@@ -30,10 +32,11 @@ export interface ToothData {
 
 export type PatientDTO = Patient & {
   teeth?: Tooth[];
-  images?: PatientImage;
+  images?: PatientImage[];
 };
 
 export function CreateView() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = React.useState("patient-info");
   const [searchQuery, setSearchQuery] = React.useState("");
   const [patientData, setPatientData] = React.useState<Patient[]>([]);
@@ -41,7 +44,13 @@ export function CreateView() {
   const ref = React.useRef(null);
   const { data: session } = useSession();
 
-  const tabs = ["patient-info", "dental-formula", "photos", "treatment-plan"];
+  const tabs = [
+    "patient-info",
+    "dental-formula",
+    "photos",
+    "treatment-plan",
+    "submit-info",
+  ];
 
   const handleSearch = async (query: string) => {
     setSearchQuery(query);
@@ -74,7 +83,22 @@ export function CreateView() {
           methods.setValue("teethData", formattedTeethData);
         }
         if (patient.images) {
-          const uploadedFiles = await convertUrlsToFiles(patient);
+          const patientImages = patient.images;
+
+          const fieldMap: Record<
+            string,
+            keyof TPatientFormValues["uploadedFiles"]
+          > = {
+            upper_occlusal: "upper_occlusal",
+            lower_occlusal: "lower_occlusal",
+            side_left: "side_left",
+            side_right: "side_right",
+            panoramic_xray: "panoramic_xray",
+          };
+
+          const uploadedFiles = await convertUrlsToFiles<
+            TPatientFormValues["uploadedFiles"]
+          >(patientImages, fieldMap);
           methods.setValue("uploadedFiles", uploadedFiles);
         }
       }
@@ -130,7 +154,11 @@ export function CreateView() {
       await Promise.all(
         Object.entries(data.uploadedFiles).map(async ([key, file]) => {
           if (file) {
-            const fileUrl = await handleFileUpload(file, result.patientId, key);
+            const fileUrl = await handleFileUpload({
+              file,
+              key,
+              patientId: result.patientId,
+            });
             return { [key]: fileUrl };
           }
           return { [key]: null };
@@ -139,6 +167,8 @@ export function CreateView() {
 
       if (result?.success) {
         alert("Patient created successfully!");
+        router.push("/patients");
+        revalidatePath("/patients");
       } else {
         throw new Error("Failed to create patient");
       }
@@ -224,6 +254,7 @@ export function CreateView() {
                 ) => {
                   methods.setValue(`uploadedFiles.${variant}`, file);
                 }}
+                hasLastDragDrop={true}
               />
             </TabsContent>
 

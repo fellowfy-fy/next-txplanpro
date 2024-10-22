@@ -23,6 +23,7 @@ model User {
     userRoles UserBusinessRole[]
     patients  Patient[]
     images    BusinessImage[]
+    prices    Service[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -36,7 +37,7 @@ model Business {
     phone    String
     business BusinessType
 
-    images    BusinessImage[]
+    // images    BusinessImage[]
     userRoles UserBusinessRole[]
     // patients  Patient[]
 
@@ -96,15 +97,18 @@ model BusinessImage {
     id Int @id @default(autoincrement())
 
     imageUrl String
+    type     String
 
-    business   Business @relation(fields: [businessId], references: [id])
-    businessId Int
+    // business   Business @relation(fields: [businessId], references: [id])
+    // businessId Int
 
-    user   User @relation(fields: [userId], references: [id])
-    userId Int
+    doctor   User @relation(fields: [doctorId], references: [id])
+    doctorId Int
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@unique([doctorId, type])
 }
 
 model PatientImage {
@@ -118,6 +122,20 @@ model PatientImage {
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model Service {
+    id Int @id @default(autoincrement())
+
+    type     String
+    price    Float
+    doctor   User   @relation(fields: [doctorId], references: [id])
+    doctorId Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([doctorId, type])
 }
 
 enum UserRole {

@@ -37,7 +37,7 @@ export const RegisterForm: React.FC<Props> = () => {
         password: data.password,
       });
 
-      router.push("/dashboard");
+      router.push("/create-plan");
     } catch (error) {
       return console.log("Ошибка регистрации" + error);
     }

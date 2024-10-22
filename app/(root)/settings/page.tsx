@@ -1,14 +1,25 @@
-"use client";
 import { Title } from "@/components/ui/title";
 import { PageDescription } from "@/components/ui/page-description";
 // import { useRouter } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import ElementGrid from "@/components/shared/element-grid";
-import { ActionCard } from "@/components/shared/action-cards";
+import { BusinessForm } from "@/components/shared/forms/business-form";
+import { getUserSession } from "@/lib/get-user-session";
+import { prisma } from "@/prisma/prisma-client";
 // import { SearchBox } from "@/components/ui/searchbox";
 
-export default function Settings() {
+export default async function Settings() {
   // const router = useRouter();
+  const session = await getUserSession();
+  const sesttingsData = session
+    ? await prisma.user.findFirst({
+        where: { id: Number(session?.id) },
+        include: {
+          images: true,
+          prices: true,
+        },
+      })
+    : null;
 
   return (
     <Container>
@@ -25,10 +36,7 @@ export default function Settings() {
       />
 
       <ElementGrid>
-        <ActionCard variant="uploadC" />
-        <ActionCard variant="dental" />
-        <ActionCard variant="team" />
-        <ActionCard variant="texts" />
+        <BusinessForm initData={sesttingsData} />
       </ElementGrid>
     </Container>
   );
