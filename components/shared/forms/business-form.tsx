@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { upsertServices } from "@/app/(root)/settings/actions";
 import { handleFileUpload } from "@/hooks/handle-file-upload";
-import { revalidatePath } from "next/cache";
 import { convertUrlsToFiles } from "../convert-urls-to-file";
 
 interface Props {
@@ -23,12 +22,12 @@ interface Props {
 }
 
 export interface Service {
-  name: string;
+  type: string;
   price: number;
 }
 
-const formatServiceName = (name: string) => {
-  return name
+const formatServiceName = (type: string) => {
+  return type
     .split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
@@ -40,13 +39,13 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
     resolver: zodResolver(businessSchema),
     defaultValues: {
       servicePrices: [
-        { name: "extracted", price: 200 },
-        { name: "tooth_crown", price: 100 },
-        { name: "implant_crown", price: 100 },
-        { name: "implant", price: 100 },
-        { name: "root_recession", price: 100 },
-        { name: "altered_passive_eruption", price: 100 },
-        { name: "filling", price: 100 },
+        { type: "extracted", price: 200 },
+        { type: "tooth_crown", price: 100 },
+        { type: "implant_crown", price: 100 },
+        { type: "implant", price: 100 },
+        { type: "root_recession", price: 100 },
+        { type: "altered_passive_eruption", price: 100 },
+        { type: "filling", price: 100 },
       ],
       uploadedFiles: {
         intro: null,
@@ -64,13 +63,13 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
           initData.prices && initData.prices.length
             ? initData.prices
             : [
-                { name: "extracted", price: 200 },
-                { name: "tooth_crown", price: 100 },
-                { name: "implant_crown", price: 100 },
-                { name: "implant", price: 100 },
-                { name: "root_recession", price: 100 },
-                { name: "altered_passive_eruption", price: 100 },
-                { name: "filling", price: 100 },
+                { type: "extracted", price: 200 },
+                { type: "tooth_crown", price: 100 },
+                { type: "implant_crown", price: 100 },
+                { type: "implant", price: 100 },
+                { type: "root_recession", price: 100 },
+                { type: "altered_passive_eruption", price: 100 },
+                { type: "filling", price: 100 },
               ]
         );
 
@@ -96,7 +95,6 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
             break: uploadedFiles.break || null,
           });
         } else {
-          // Если изображения не были переданы, устанавливаем defaultValues
           methods.setValue("uploadedFiles", {
             intro: null,
             vision: null,
@@ -133,7 +131,6 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
 
       if (result?.success) {
         alert("Settings were updated!");
-        revalidatePath("/settings");
       } else {
         throw new Error("Failed to create patient");
       }
@@ -161,8 +158,9 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
           <div key={index}>
             <FormInput
               name={`servicePrices.${index}.price`}
-              label={formatServiceName(service.name)}
+              label={formatServiceName(service.type)}
               type="number"
+              isNumber={true}
             />
           </div>
         ))}

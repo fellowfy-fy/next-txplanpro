@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 const servicePrices = z.array(
     z.object({
-      name: z.string(),
-      price: z.number(),
+      type: z.string(),
+      price: z.number({message: "Price must be a number"}),
     })
   );
 const uploadedFilesSchema = z.object({

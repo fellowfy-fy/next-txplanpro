@@ -1,3 +1,4 @@
+"use server"
 import { Service } from "@/components/shared/forms/business-form";
 import { PrismaClient } from "@prisma/client";
 
@@ -8,17 +9,17 @@ export const upsertServices = async ({ services, doctorId }: { services: Service
   try {
     if (services) {
       const servicesUpsertPromises = services.map((service) =>
-        prisma.service.upsert({
+         prisma.service.upsert({
           where: {doctorId_type: {
             doctorId: doctorId,
-            type: service.name,
+            type: service.type,
           },
           },
           update: {
             price: service.price,
           },
           create: {
-            type: service.name,
+            type: service.type,
             price: service.price,
             doctorId: doctorId,
           },

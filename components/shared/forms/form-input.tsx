@@ -5,6 +5,7 @@ import { Input } from "../../ui/input";
 import { ClearButton } from "./clear-button";
 import { ErrorText } from "./error-text";
 import { RequiredSymbol } from "./required-symbol";
+import React from "react";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -12,6 +13,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   required?: boolean;
   className?: string;
   type?: string;
+  isNumber?: boolean;
 }
 
 export const FormInput: React.FC<Props> = ({
@@ -20,6 +22,7 @@ export const FormInput: React.FC<Props> = ({
   label,
   required,
   type,
+  isNumber,
   ...props
 }) => {
   const {
@@ -47,7 +50,9 @@ export const FormInput: React.FC<Props> = ({
       <div className="relative">
         <Input
           className="h-12 text-md"
-          {...register(name)}
+          {...register(name, {
+            setValueAs: isNumber ? (value: string) => Number(value) : undefined,
+          })}
           type={type}
           {...props}
         />
