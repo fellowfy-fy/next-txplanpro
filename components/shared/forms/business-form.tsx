@@ -12,7 +12,7 @@ import { FormInput } from "./form-input";
 import { Title } from "@/components/ui/title";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
-import { upsertServices } from "@/app/(root)/settings/actions";
+import { upsertContent, upsertServices } from "@/app/(root)/settings/actions";
 import { handleFileUpload } from "@/hooks/handle-file-upload";
 import { convertUrlsToFiles } from "../convert-urls-to-file";
 
@@ -24,6 +24,11 @@ interface Props {
 export interface Service {
   type: string;
   price: number;
+}
+
+export interface Content {
+  type: string;
+  content: string;
 }
 
 const formatServiceName = (type: string) => {
@@ -52,6 +57,12 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
         vision: null,
         break: null,
       },
+      content: [
+        { type: "intro", content: "" },
+        { type: "vision", content: "" },
+        { type: "break", content: "" },
+        { type: "services", content: "" },
+      ],
     },
   });
 
@@ -70,6 +81,18 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
                 { type: "root_recession", price: 100 },
                 { type: "altered_passive_eruption", price: 100 },
                 { type: "filling", price: 100 },
+              ]
+        );
+
+        methods.setValue(
+          "content",
+          initData.content && initData.content.length
+            ? initData.content
+            : [
+                { type: "intro", content: "" },
+                { type: "vision", content: "" },
+                { type: "break", content: "" },
+                { type: "services", content: "" },
               ]
         );
 
@@ -111,8 +134,10 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
       const doctorId = Number(session?.user?.id);
       if (!doctorId) throw new Error("Doctor not found");
       const services = data.servicePrices;
+      const contents = data.content;
 
-      const result = await upsertServices({ services, doctorId });
+      await upsertServices({ services, doctorId });
+      await upsertContent({ contents, doctorId });
 
       await Promise.all(
         Object.entries(data.uploadedFiles).map(async ([key, file]) => {
@@ -128,7 +153,7 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
           return { [key]: null };
         })
       );
-
+      const result = { success: true };
       if (result?.success) {
         alert("Settings were updated!");
       } else {
@@ -161,6 +186,15 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
               label={formatServiceName(service.type)}
               type="number"
               isNumber={true}
+            />
+          </div>
+        ))}
+        <Title text="Content for PDF" />
+        {methods.watch("content").map((content, index) => (
+          <div key={index}>
+            <FormInput
+              name={`content.${index}.content`}
+              label={formatServiceName(content.type)}
             />
           </div>
         ))}

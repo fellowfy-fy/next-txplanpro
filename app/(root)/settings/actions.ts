@@ -1,5 +1,5 @@
 "use server"
-import { Service } from "@/components/shared/forms/business-form";
+import { Service, Content } from "@/components/shared/forms/business-form";
 import { PrismaClient } from "@prisma/client";
 
 
@@ -32,6 +32,38 @@ export const upsertServices = async ({ services, doctorId }: { services: Service
     }
   } catch (err) {
     console.error("Error upserting services:", err);
+    throw new Error("Failed to upsert services");
+  }
+};
+
+
+export const upsertContent = async ({ contents, doctorId }: { contents: Content[], doctorId: number }) => {
+  try {
+    if (contents) {
+      const contentsUpsertPromises = contents.map((content) =>
+         prisma.businessContent.upsert({
+          where: {doctorId_type: {
+            doctorId: doctorId,
+            type: content.type,
+          },
+          },
+          update: {
+            content: content.content,
+          },
+          create: {
+            type: content.type,
+            content: content.content,
+            doctorId: doctorId,
+          },
+        })
+      );
+
+      await Promise.all(contentsUpsertPromises);
+
+      return { success: true };
+    }
+  } catch (err) {
+    console.error("Error upserting contents:", err);
     throw new Error("Failed to upsert services");
   }
 };

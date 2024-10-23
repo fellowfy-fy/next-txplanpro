@@ -7,9 +7,7 @@ interface ElementGridProps {
 
 const ElementGrid: React.FC<ElementGridProps> = ({ children }) => {
   return (
-    <div className="grid gap-5 grid-cols-1 lg:grid-cols-2 mt-5">
-      {children}
-    </div>
+    <div className="grid gap-5 grid-cols-1 lg:grid-cols-2 mt-5">{children}</div>
   );
 };
 

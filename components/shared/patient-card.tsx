@@ -65,18 +65,16 @@ export const PatientCard: React.FC<PatientCardProps> = ({
           </div>
           <hr />
           <div className="flex flex-row justify-between items-center"></div>
+          <Button
+            variant="default"
+            onClick={() => {
+              router.push("/pdf");
+            }}
+          >
+            Create Plan
+          </Button>
         </CardContent>
       ))}
-      <CardFooter>
-        <Button
-          variant="default"
-          onClick={() => {
-            router.push("/pdf");
-          }}
-        >
-          Create Plan
-        </Button>
-      </CardFooter>
     </Card>
   );
 };

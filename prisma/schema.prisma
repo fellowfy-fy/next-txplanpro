@@ -24,6 +24,7 @@ model User {
     patients  Patient[]
     images    BusinessImage[]
     prices    Service[]
+    content   BusinessContent[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -129,6 +130,20 @@ model Service {
 
     type     String
     price    Float
+    doctor   User   @relation(fields: [doctorId], references: [id])
+    doctorId Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([doctorId, type])
+}
+
+model BusinessContent {
+    id Int @id @default(autoincrement())
+
+    type     String
+    content  String
     doctor   User   @relation(fields: [doctorId], references: [id])
     doctorId Int
 

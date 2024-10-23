@@ -17,6 +17,7 @@ export default async function Settings() {
         include: {
           images: true,
           prices: true,
+          content: true,
         },
       })
     : null;

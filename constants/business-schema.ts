@@ -11,10 +11,17 @@ const uploadedFilesSchema = z.object({
     vision: z.instanceof(File).nullable(),
     break: z.instanceof(File).nullable(),
   });
+const content = z.array(
+  z.object({
+    type: z.string(),
+    content: z.string(),
+  })
+)
 
 export const businessSchema = z.object({
     servicePrices: servicePrices,
-    uploadedFiles: uploadedFilesSchema, 
+    uploadedFiles: uploadedFilesSchema,
+    content: content,
 })
 
 export type TBusinessFormValues = z.infer<typeof businessSchema>;
