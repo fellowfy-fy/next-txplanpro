@@ -1,19 +1,9 @@
 "use client";
-
 import React from "react";
 import { Container } from "../ui/container";
 import { Button } from "../ui/button";
 import { Title } from "../ui/title";
-
-const images = [
-  "/intro-placeholder.jpg",
-  "/description-placeholder.jpg",
-  "/left-side.png",
-  "/right-side.png",
-  "/lower-jaw.png",
-  "/upper-jaw.png",
-  "/xray.png",
-];
+import { pdfContent } from "@/constants/pdf"; 
 
 export default function PdfGenerator() {
   const handleDownloadPDF = async () => {
@@ -30,89 +20,83 @@ export default function PdfGenerator() {
     }
   };
 
+  const { images, texts } = pdfContent;
+
   return (
     <Container>
-      <Title text="Preview of PDF Plan" />
+      <Title text={texts.pageTitle} />
       <Button onClick={handleDownloadPDF}>Download PDF</Button>
       <section className="flex flex-col items-center mt-10">
         <div className="w-[842px] h-[595px] relative">
-          <img src={images[0]} alt="" className="w-full h-full object-cover" />
-          <p className="absolute left-0 top-1/2">Patient LOL ready for duty</p>
-          <p className="absolute left-0 top-[55%]">
-            Patient LOL ready for duty
-          </p>
+          <img src={images.intro} alt="" className="w-full h-full object-cover" />
+          <p className="absolute left-0 top-1/2">{texts.patientStatus}</p>
+          <p className="absolute left-0 top-[55%]">{texts.patientStatus}</p>
         </div>
+
         <div className="w-[842px] h-[595px] relative">
-          <img src={images[1]} alt="" className="w-full h-full object-cover" />
-          <p className="absolute right-1/2 top-[30%]">
-            Patient LOL ready for duty
-          </p>
-          <p className="absolute right-0 top-[70%]">
-            Patient LOL ready for duty
-          </p>
+          <img src={images.description} alt="" className="w-full h-full object-cover" />
+          <p className="absolute right-1/2 top-[30%]">{texts.patientStatus}</p>
+          <p className="absolute right-0 top-[70%]">{texts.patientStatus}</p>
         </div>
+
         <div className="w-[842px] h-[595px] flex justify-between items-end">
           <div className="flex flex-col items-center">
             <img
-              src={images[2]}
+              src={images.leftSide}
               alt=""
               className="object-cover mb-2 w-[400px] h-[300px]"
             />
-            <p className="text-center">Left Side</p>
+            <p className="text-center">{texts.leftSideLabel}</p>
           </div>
-
           <div className="flex flex-col items-center">
             <img
-              src={images[3]}
+              src={images.rightSide}
               alt=""
-              className="object-cover mb-2  w-[400px] h-[300px]"
+              className="object-cover mb-2 w-[400px] h-[300px]"
             />
-            <p className="text-center">Right Side</p>
+            <p className="text-center">{texts.rightSideLabel}</p>
           </div>
         </div>
+
         <div className="w-[842px] h-[595px] flex justify-between items-end">
           <div className="flex flex-col items-center">
             <img
-              src={images[4]}
+              src={images.lowerJaw}
               alt=""
               className="object-cover mb-2 w-[400px] h-[300px]"
             />
-            <p className="text-center">Lower Side</p>
+            <p className="text-center">{texts.lowerSideLabel}</p>
           </div>
-
           <div className="flex flex-col items-center">
             <img
-              src={images[5]}
+              src={images.upperJaw}
               alt=""
-              className="object-cover mb-2  w-[400px] h-[300px]"
+              className="object-cover mb-2 w-[400px] h-[300px]"
             />
-            <p className="text-center">Upper Side</p>
+            <p className="text-center">{texts.upperSideLabel}</p>
           </div>
         </div>
+
         <div className="w-[842px] h-[595px] relative">
-          <img src={images[1]} alt="" className="w-full h-full object-cover" />
-          <p className="absolute right-0 top-[70%]">
-            Patient LOL ready for duty
-          </p>
+          <img src={images.description} alt="" className="w-full h-full object-cover" />
+          <p className="absolute right-0 top-[70%]">{texts.patientStatus}</p>
         </div>
+
         <div className="w-[842px] h-[595px] flex flex-col">
-          {/* Картинка сверху на всю ширину */}
           <img
-            src={images[6]}
+            src={images.xray}
             alt=""
             className="w-full object-cover mb-4 h-[300px]"
           />
-
-          {/* Три столбца с текстом */}
           <div className="flex justify-between flex-grow">
             <div className="flex-1 text-center p-4">
-              <p>Text in Column 1</p>
+              <p>{texts.columnOne}</p>
             </div>
             <div className="flex-1 text-center p-4">
-              <p>Text in Column 2</p>
+              <p>{texts.columnTwo}</p>
             </div>
             <div className="flex-1 text-center p-4">
-              <p>Text in Column 3</p>
+              <p>{texts.columnThree}</p>
             </div>
           </div>
         </div>

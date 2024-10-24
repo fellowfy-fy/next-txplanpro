@@ -27,10 +27,31 @@ async function generatePDF() {
     height: landscapeHeight,
   });
 
-  // Добавляем текст на вторую страницу
-  page2.drawText('Text in bottom-left corner', {
-    x: 50,
-    y: 50,
+  page1.drawText('Centered Text on First Page', {
+    x: 50, 
+    y: 300,
+    size: 24,
+    color: rgb(0, 0, 0),
+  });
+
+
+    page2.drawImage(backgroundImage, {
+    x: 0,
+    y: 0,
+    width: landscapeWidth,
+    height: landscapeHeight,
+  });
+
+  page2.drawText('Text in bottom-right corner', {
+    x: landscapeWidth - 400, // Справа
+    y: 200, // Снизу
+    size: 24,
+    color: rgb(0, 0, 0),
+  });
+
+  page2.drawText('Text in top-left corner', {
+    x: 100, // Слева
+    y: landscapeHeight - 200, // Сверху
     size: 24,
     color: rgb(0, 0, 0),
   });
@@ -39,10 +60,8 @@ async function generatePDF() {
   const imageBytes = await fetch('https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/PNG_transparency_demonstration_1.png/420px-PNG_transparency_demonstration_1.png').then((res) => res.arrayBuffer());
   const image = await pdfDoc.embedPng(imageBytes);
   const positions = [
-    { x: 50, y: 300 },
-    { x: 300, y: 300 },
-    { x: 50, y: 100 },
-    { x: 300, y: 100 },
+    { x: 150, y: 250 },
+    { x: 500, y: 250 },
   ];
   positions.forEach(pos => {
     page3.drawImage(image, {
@@ -52,18 +71,61 @@ async function generatePDF() {
     });
   });
 
+    page3.drawText('Text left', {
+    x: landscapeWidth - 300, 
+    y: 200, 
+    size: 24,
+    color: rgb(0, 0, 0),
+  });
+
+  page3.drawText('Text right', {
+    x: 200, 
+    y: 200, 
+    size: 24,
+    color: rgb(0, 0, 0),
+  });
+
   // Добавляем текст на правую сторону четвертой страницы
-  page4.drawText('Right-centered text', {
-    x: 550,
-    y: landscapeHeight / 2,
+  positions.forEach(pos => {
+  page4.drawImage(image, {
+    ...pos,
+    width: 200,
+    height: 200,
+  });
+});
+
+    page4.drawText('Text left', {
+    x: landscapeWidth - 300, 
+    y: 200, 
+    size: 24,
+    color: rgb(0, 0, 0),
+  });
+
+  page4.drawText('Text right', {
+    x: 200, 
+    y: 200, 
     size: 24,
     color: rgb(0, 0, 0),
   });
 
   // Добавляем текст в левом верхнем углу пятой страницы
-  page5.drawText('Top-left text', {
-    x: 50,
-    y: landscapeHeight - 50,
+    page5.drawImage(backgroundImage, {
+    x: 0,
+    y: 0,
+    width: landscapeWidth,
+    height: landscapeHeight,
+  });
+
+  page5.drawText('Text in bottom-right corner', {
+    x: landscapeWidth - 400, // Справа
+    y: 200, // Снизу
+    size: 24,
+    color: rgb(0, 0, 0),
+  });
+
+  page5.drawText('Text in top-left corner', {
+    x: 100, // Слева
+    y: landscapeHeight - 200, // Сверху
     size: 24,
     color: rgb(0, 0, 0),
   });
@@ -77,9 +139,9 @@ async function generatePDF() {
   });
 
   const columns = [
-    { x: 50, text: 'Column 1 text' },
-    { x: 250, text: 'Column 2 text' },
-    { x: 450, text: 'Column 3 text' },
+    { x: 150, text: 'Column 1 text' },
+    { x: 350, text: 'Column 2 text' },
+    { x: 550, text: 'Column 3 text' },
   ];
   columns.forEach((col) => {
     page6.drawText(col.text, {
