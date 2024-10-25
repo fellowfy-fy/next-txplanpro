@@ -1,4 +1,4 @@
-import { PDFDocument, rgb } from "pdf-lib";
+import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import { NextResponse } from "next/server";
 import { Patient, User, PatientImage, BusinessImage, Service, BusinessContent, Tooth } from "@prisma/client";
 
@@ -56,6 +56,9 @@ async function generatePDF({
 }: GeneratePDFParams) {
   const pdfDoc = await PDFDocument.create();
 
+  // Загружаем шрифт с поддержкой Unicode
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
   const landscapeWidth = 842;
   const landscapeHeight = 595;
 
@@ -96,12 +99,14 @@ async function generatePDF({
     x: 50,
     y: landscapeHeight / 2,
     size: 24,
+    font,
     color: rgb(0, 0, 0),
   });
   page1.drawText(`Doctor: ${doctor.fullName}`, {
     x: 50,
     y: (landscapeHeight / 2) - 50,
     size: 24,
+    font,
     color: rgb(0, 0, 0),
   });
 
@@ -125,12 +130,14 @@ async function generatePDF({
     x: landscapeWidth / 2 - 200,
     y: landscapeHeight * 0.7,
     size: 24,
+    font,
     color: rgb(0, 0, 0),
   });
   page2.drawText(`Doctor: ${doctor.fullName}`, {
     x: landscapeWidth - 300,
     y: landscapeHeight * 0.3,
     size: 24,
+    font,
     color: rgb(0, 0, 0),
   });
 
@@ -220,6 +227,7 @@ async function generatePDF({
     x: landscapeWidth - 300,
     y: landscapeHeight * 0.3,
     size: 24,
+    font,
     color: rgb(0, 0, 0),
   });
 
@@ -254,6 +262,7 @@ async function generatePDF({
       y: 200,
       size: 16,
       maxWidth: columnWidth - 20,
+      font,
       color: rgb(0, 0, 0),
     });
   });
