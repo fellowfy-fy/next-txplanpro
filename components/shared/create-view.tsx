@@ -21,7 +21,6 @@ import { cn } from "@/lib/utils";
 import { convertUrlsToFiles } from "./convert-urls-to-file";
 import { PatientSubmitInfo } from "./patient-submit-info";
 import { useRouter } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
 export interface ToothData {
   number: number;
@@ -168,7 +167,6 @@ export function CreateView() {
       if (result?.success) {
         alert("Patient created successfully!");
         router.push("/patients");
-        revalidatePath("/patients");
       } else {
         throw new Error("Failed to create patient");
       }

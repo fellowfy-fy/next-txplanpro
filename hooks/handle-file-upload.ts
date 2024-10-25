@@ -1,3 +1,4 @@
+"use client"
 import { getSignedURL } from "@/app/(root)/create-plan/actions";
 import { computeSHA256 } from "@/lib/computeSHA256";
 
@@ -40,19 +41,19 @@ export const handleFileUpload = async ({
   }
 
 
-    if (signedURLResult.failure != undefined && signedURLResult) {
-      throw new Error(signedURLResult.failure);
-    }
-  
-    const { url } = signedURLResult.success;
-  
-    await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": file.type,
-      },
-      body: file,
-    });
-  
-    return url; 
-  };
+  if (signedURLResult.failure != undefined && signedURLResult) {
+    throw new Error(signedURLResult.failure);
+  }
+
+  const { url } = signedURLResult.success;
+
+  await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": file.type,
+    },
+    body: file,
+  });
+
+  return url;
+};

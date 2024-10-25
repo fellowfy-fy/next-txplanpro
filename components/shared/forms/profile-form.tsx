@@ -14,7 +14,6 @@ import { Title } from "@/components/ui/title";
 import { FormInput } from "./form-input";
 import { Button } from "@/components/ui/button";
 import { updateUserInfo } from "@/app/actions";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -40,7 +39,6 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
         password: data.password,
       });
 
-      revalidatePath("/profile");
     } catch (error) {
       return console.log("UPDATE error: " + error);
     }
