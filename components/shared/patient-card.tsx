@@ -68,7 +68,7 @@ export const PatientCard: React.FC<PatientCardProps> = ({
           <Button
             variant="default"
             onClick={() => {
-              router.push("/pdf");
+              router.push(`/pdf/${patient.id}`);
             }}
           >
             Create Plan
