@@ -1,11 +1,11 @@
 import { create } from "zustand"
 
 interface MenuState {
-  activeItem: string;
+  activeItem: string | null;
   setActiveItem: (title: string) => void;
 }
 
 export const useMenuStore = create<MenuState>((set) => ({
-  activeItem: "Dashboard",
+  activeItem: null,
   setActiveItem: (title: string) => set({ activeItem: title }),
 }));

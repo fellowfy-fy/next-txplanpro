@@ -1,22 +1,10 @@
 "use server";
-
 import { PrismaClient } from "@prisma/client";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { ToothData } from "@/components/shared/create-view";
 import crypto from "crypto";
 
 const prisma = new PrismaClient();
-
-const s3Client = new S3Client({
-  region: process.env.AWS_BUCKET_REGION!,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_PUBLIC_KEY!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-  },
-});
-
-const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 
 export const createPatient = async (
   { fullName, address, birthDate, doctorId }:
@@ -39,6 +27,76 @@ export const createPatient = async (
   }
 };
 
+interface ToothProps {
+  number: number;
+  diagnosis: string[];
+  treatments: string[];
+  note?: string;
+}
+
+export const createPlan = async (
+  { title, teeth, patientId, doctorId }:
+    { title?: string, teeth: ToothProps[], patientId: number, doctorId: number },
+) => {
+  try {
+    const patient = await prisma.patient.findUnique({
+      where: {
+        id_doctorId: {
+          id: patientId,
+          doctorId: doctorId,
+        }
+      }
+    });
+
+    if (!patient) {
+      throw new Error('Patient not found or access denied');
+    }
+
+    const plan = await prisma.plan.create({
+      data: {
+        title,
+        patientId,
+      }
+    })
+
+    if (!plan) {
+      throw new Error('Plan not created');
+    }
+
+    if (teeth) {
+      const teethCreationPromises = teeth.map((tooth) =>
+        prisma.tooth.create({
+          data: {
+            number: tooth.number,
+            treatments: tooth.treatments,
+            diagnosis: tooth.diagnosis,
+            note: tooth.note,
+            planId: plan.id,
+          },
+        })
+      );
+      await Promise.all([...teethCreationPromises]);
+    }
+
+    return { success: true, planId: plan.id };
+
+
+  } catch (error) {
+    console.error("Error creating patient:", error);
+    throw new Error("Failed to create patient [PATIENT_CREATION]");
+  }
+};
+
+const s3Client = new S3Client({
+  region: process.env.AWS_BUCKET_REGION!,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_PUBLIC_KEY!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
+
+const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
+
 const allowedFileTypes = [
   "image/jpeg",
   "image/png",
@@ -55,7 +113,10 @@ type GetSignedURLParams = {
   checksum: string
   patientId?: number
   doctorId?: number
+  planId?: number
   businessImage?: boolean
+  patientImage?: boolean
+  planImage?: boolean
   key: string
 }
 
@@ -65,7 +126,10 @@ export const getSignedURL = async ({
   checksum,
   patientId,
   doctorId,
+  planId,
   businessImage,
+  patientImage,
+  planImage,
   key
 }: GetSignedURLParams): Promise<SignedURLResponse> => {
 
@@ -87,15 +151,15 @@ export const getSignedURL = async ({
   const url = await getSignedUrl(
     s3Client,
     putObjectCommand,
-    { expiresIn: 60 } // 60 seconds
+    { expiresIn: 60 }
   )
 
-  if (patientId) {
+  if (patientId && patientImage) {
     const results = await prisma.patientImage.create({
       data: {
         imageUrl: url.split("?")[0],
         patientId,
-        type: key
+        name: key
       },
     });
 
@@ -105,9 +169,9 @@ export const getSignedURL = async ({
   if (doctorId && businessImage) {
     const results = await prisma.businessImage.upsert({
       where: {
-        doctorId_type: {
+        doctorId_name: {
           doctorId: doctorId,
-          type: key,
+          name: key,
         },
       },
       update: {
@@ -116,7 +180,27 @@ export const getSignedURL = async ({
       create: {
         imageUrl: url.split("?")[0],
         doctorId: doctorId,
-        type: key,
+        name: key,
+      },
+    });
+
+    return { success: { url, id: results.id } }
+  }
+  if (planId && planImage) {
+    const results = await prisma.planImage.upsert({
+      where: {
+        planId_name: {
+          planId: planId,
+          name: key,
+        },
+      },
+      update: {
+        imageUrl: url.split("?")[0],
+      },
+      create: {
+        imageUrl: url.split("?")[0],
+        planId: planId,
+        name: key,
       },
     });
 
@@ -125,5 +209,3 @@ export const getSignedURL = async ({
 
   return { failure: "Nothing has been loaded to s3 bucket" }
 }
-
-// export const createPlan = async()

@@ -3,31 +3,18 @@ import { useClickAway, useDebounce } from "react-use";
 import React from 'react';
 import { useSession } from "next-auth/react";
 import { Api } from "@/services/api-client";
-import { PatientDTO } from "./create-view";
+import { PatientDTO } from "./create-plan-form";
 import { SearchBox } from "../ui/searchbox";
-import { useActivePatient } from "@/store/active-patient";
 import { cn } from "@/lib/utils";
+import { useSetPatient } from "@/hooks/use-set-patient";
 
 export const PatientSearch: React.FC = () => {
   const { data: session } = useSession();
   const [searchQuery, setSearchQuery] = React.useState("");
   const [focused, setFocused] = React.useState(false);
   const [searchResults, setSearchResults] = React.useState<PatientDTO[]>([]);
+  const handlePatientClick = useSetPatient();
   const ref = React.useRef(null);
-  
-  // Используем store для активного пациента
-  const { setActivePatient } = useActivePatient();
-
-  const onClickPatient = (patient: PatientDTO) => {
-    return async (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      if (patient) {
-        setActivePatient(patient);
-        setFocused(false);
-        setSearchQuery("");
-        setSearchResults([]);
-      }
-    };
-  };
 
   const handleSearch = async (query: string) => {
     setSearchQuery(query);
@@ -57,6 +44,13 @@ export const PatientSearch: React.FC = () => {
     setFocused(false);
   });
 
+  const onClickPatient = (patient: PatientDTO) => {
+    handlePatientClick(patient)
+    setFocused(false);
+    setSearchQuery("");
+    setSearchResults([])
+  }
+
   return (
     <div ref={ref} onFocus={() => setFocused(true)}>
             <div className="w-full relative">
@@ -72,7 +66,7 @@ export const PatientSearch: React.FC = () => {
           {searchResults.map((patient) => (
             <div
               key={patient.id}
-              onClick={onClickPatient(patient)}
+              onClick={() => onClickPatient(patient)}
               className="flex items-center gap-3 w-full px-3 py-2 hover:bg-primary/10 cursor-pointer"
             >
               <span>{patient.fullName}</span>

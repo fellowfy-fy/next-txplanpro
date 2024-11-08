@@ -12,6 +12,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { MenuList } from "./menu-list";
+import { ActivePatient } from "./active-patient";
+import { PatientSearch } from "./patient-search";
 // import { SearchBox } from "../ui/searchbox";
 
 export function Sidebar() {
@@ -52,6 +54,8 @@ export function Sidebar() {
             </SheetHeader>
             <div className="grid gap-4 py-4">
               <MenuList />
+              <ActivePatient />
+              <PatientSearch />
             </div>
             <SheetFooter>
               <SheetClose asChild>

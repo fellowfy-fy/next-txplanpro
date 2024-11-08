@@ -78,12 +78,14 @@ model Patient {
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@unique([id, doctorId])
 }
 
 model Plan {
     id Int @id @default(autoincrement())
 
-    title String?
+    title String? @default("Unknown Title")
 
     patient   Patient     @relation(fields: [patientId], references: [id])
     patientId Int
@@ -95,11 +97,11 @@ model Plan {
 }
 
 model Tooth {
-    id        Int      @id @default(autoincrement())
-    number    Int
-    diagnoses String[]
-    treatment String[]
-    note      String?
+    id         Int      @id @default(autoincrement())
+    number     Int
+    diagnosis  String[]
+    treatments String[]
+    note       String?
 
     plan   Plan @relation(fields: [planId], references: [id])
     planId Int
@@ -112,7 +114,7 @@ model BusinessImage {
     id Int @id @default(autoincrement())
 
     imageUrl String
-    type     String
+    name     String
 
     // business   Business @relation(fields: [businessId], references: [id])
     // businessId Int
@@ -123,14 +125,14 @@ model BusinessImage {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    @@unique([doctorId, type])
+    @@unique([doctorId, name])
 }
 
 model PatientImage {
     id Int @id @default(autoincrement())
 
     imageUrl String
-    type     String
+    name     String
 
     patient   Patient @relation(fields: [patientId], references: [id])
     patientId Int
@@ -143,19 +145,21 @@ model PlanImage {
     id Int @id @default(autoincrement())
 
     imageUrl String
-    type     String
+    name     String
 
     plan   Plan @relation(fields: [planId], references: [id])
     planId Int
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@unique([planId, name])
 }
 
 model Service {
     id Int @id @default(autoincrement())
 
-    type     String
+    name     String
     price    Float
     doctor   User   @relation(fields: [doctorId], references: [id])
     doctorId Int
@@ -163,13 +167,13 @@ model Service {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    @@unique([doctorId, type])
+    @@unique([doctorId, name])
 }
 
 model BusinessContent {
     id Int @id @default(autoincrement())
 
-    type     String
+    name     String
     content  String
     doctor   User   @relation(fields: [doctorId], references: [id])
     doctorId Int
@@ -177,7 +181,7 @@ model BusinessContent {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    @@unique([doctorId, type])
+    @@unique([doctorId, name])
 }
 
 enum UserRole {

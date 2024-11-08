@@ -7,7 +7,10 @@ interface HandleFileUploadProps {
   key: string;
   patientId?: number;
   doctorId?: number;
+  planId?: number;
   businessImage?: boolean;
+  patientImage?: boolean
+  planImage?: boolean
 }
 
 export const handleFileUpload = async ({
@@ -15,11 +18,14 @@ export const handleFileUpload = async ({
   key,
   patientId,
   doctorId,
+  planId,
   businessImage,
+  patientImage,
+  planImage,
 }: HandleFileUploadProps) => {
   let signedURLResult;
 
-  if (patientId) {
+  if (patientId && patientImage) {
     signedURLResult = await getSignedURL({
       fileSize: file.size,
       fileType: file.type,
@@ -27,13 +33,22 @@ export const handleFileUpload = async ({
       patientId,
       key
     });
-  } else if (doctorId) {
+  } else if (doctorId && businessImage) {
     signedURLResult = await getSignedURL({
       fileSize: file.size,
       fileType: file.type,
       checksum: await computeSHA256(file),
       doctorId,
       businessImage,
+      key
+    });
+  } else if (planId && planImage) {
+    signedURLResult = await getSignedURL({
+      fileSize: file.size,
+      fileType: file.type,
+      checksum: await computeSHA256(file),
+      planId,
+      planImage,
       key
     });
   } else {

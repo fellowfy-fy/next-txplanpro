@@ -2,7 +2,7 @@
 
 import React from "react";
 import TeethDiagram from "./teeth-form";
-import { ToothData } from "./create-view";
+import { ToothData } from "./create-plan-form";
 
 interface DentalFormulaProps {
   handleTeethDataChange: (newData: ToothData[]) => void; // Теперь это массив зубов

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Teeth, { ToothInfo } from "./teeth-import";
 import { diagnoses, DiagnosisProps } from "../../constants/diagnoses";
 import { TreatmentProps, treatments } from "../../constants/treatments";
-import { ToothData } from "./create-view";
+import { ToothData } from "./create-plan-form";
 
 interface TeethDiagramProps {
   mode: "diagnosis" | "treatment";

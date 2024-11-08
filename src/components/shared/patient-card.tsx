@@ -9,6 +9,8 @@ import { Button } from "../ui/button";
 import { Loader, Pencil, Trash2 } from "lucide-react";
 import { Api } from "@/services/api-client";
 import toast from 'react-hot-toast';
+import { useSetPatient } from "@/hooks/use-set-patient";
+import { useActivePatient } from "@/store/active-patient";
 import React from "react";
 
 interface PatientCardProps {
@@ -27,11 +29,11 @@ export const PatientCard: React.FC<PatientCardProps> = ({
   doctor,
 }) => {
   const router = useRouter();
-  // Создаем объект для хранения состояния загрузки для каждой карточки
+  const handlePatientClick = useSetPatient();
   const [loadingStates, setLoadingStates] = React.useState<Record<number, boolean>>({});
+  const  { patient: activePatient }  = useActivePatient()
  
   const handleDelete = async (patientId: number, doctorId: number) => {
-    // Устанавливаем loading только для конкретной карточки
     setLoadingStates(prev => ({ ...prev, [patientId]: true }));
     
     try {
@@ -60,11 +62,18 @@ export const PatientCard: React.FC<PatientCardProps> = ({
         <Card key={patient.id}>
           <CardContent className="grid gap-4 mt-5" key={patient.id}>
             <div>
-              <span className="flex translate-y-1" />
               <div className="space-y-1">
-                <p className="text-xl font-bold leading-none pb-2">
-                  Patient: {patient.fullName}
-                </p>
+                <div className="flex justify-between items-center">
+                  <p className="text-xl font-bold leading-none pb-2">
+                    Patient: {patient.fullName}
+                  </p>
+                  <Button
+                    variant={patient.id === activePatient?.id ? 'success' : 'secondary'}
+                    onClick={() => {handlePatientClick(patient)}}
+                  >
+                    {patient.id === activePatient?.id ? 'Active' : 'Select'}
+                  </Button>
+                </div>
                 {new Date(patient.birthDate).toLocaleDateString("en-GB", {
                   year: "numeric",
                   month: "long",
@@ -83,19 +92,9 @@ export const PatientCard: React.FC<PatientCardProps> = ({
             <div className="flex flex-row justify-start gap-3 items-center">
               <Button
                 variant="default"
-                onClick={() => {
-                  router.push(`/dashboard/pdf/${patient.id}`);
-                }}
+                onClick={() => {alert("Plan page")}}
               >
-                Create Plan
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  router.push(`/dashboard/pdf/${patient.id}`);
-                }}
-              >
-                Update Plan
+                Plans
               </Button>
               <Button
                 variant="outline"

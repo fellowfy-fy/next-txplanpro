@@ -27,7 +27,6 @@ export default async function Patients() {
       />
 
       <PatientSearch />
-        <ActivePatient />
       <Title text="Patients" size="lg" className="font-bold pt-3" />
       <CreateNewPatientCard />
       <ElementGrid>

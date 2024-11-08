@@ -1,5 +1,5 @@
 import { Container } from "@/components/ui/container";
-import { CreateView } from "@/components/shared/create-view";
+import { CreatePlanForm } from "@/components/shared/create-plan-form";
 import { PageDescription } from "@/components/ui/page-description";
 
 export default function Create() {
@@ -10,7 +10,7 @@ export default function Create() {
         size="sm"
         className="pb-4"
       />
-      <CreateView />
+      <CreatePlanForm />
     </Container>
   );
 }

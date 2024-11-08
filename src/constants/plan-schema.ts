@@ -17,7 +17,8 @@ const uploadedFilesSchema = z.object({
 
 
 export const planSchema = z.object({
-  teethData: toothDataSchema,
+  title: z.string(),
+  teeth: z.array(toothDataSchema),
   uploadedFiles: uploadedFilesSchema,
 });
 
