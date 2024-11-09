@@ -1,10 +1,11 @@
 import { z } from 'zod';
 
 const toothDataSchema = z.object({
+  id: z.number().optional(),
   number: z.number(),
   diagnosis: z.array(z.string()),
   treatments: z.array(z.string()),
-  note: z.string().optional(),
+  note: z.string().optional().nullable(),
 });
 
 const uploadedFilesSchema = z.object({
@@ -17,7 +18,7 @@ const uploadedFilesSchema = z.object({
 
 
 export const planSchema = z.object({
-  title: z.string(),
+  title: z.string().nullable(),
   teeth: z.array(toothDataSchema),
   uploadedFiles: uploadedFilesSchema,
 });

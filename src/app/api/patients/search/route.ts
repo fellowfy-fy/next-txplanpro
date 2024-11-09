@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   const doctorId = req.nextUrl.searchParams.get('doctorId');
 
   if (!doctorId) {
-    return NextResponse.json({ error: 'doctorId is required' }, { status: 400 });
+    return NextResponse.json({ error: `You aren't authorized` }, { status: 400 });
   }
   try {
     const patients = await prisma.patient.findMany({

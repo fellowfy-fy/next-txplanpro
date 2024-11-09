@@ -19,11 +19,10 @@ export const TreatmentPlan: React.FC<TreatmentPlanProps> = ({
         Define Your Patient’s Treatment Plan
       </h2>
 
-      {/* Диаграмма зубов для плана лечения */}
       <TeethDiagram
-        mode="treatment" // Используем режим для лечения
-        teethData={teethData} // Передаем данные зубов
-        onTeethDataChange={handleTeethDataChange} // Обновляем данные о лечении зубов
+        mode="treatment" 
+        teethData={teethData} 
+        onTeethDataChange={handleTeethDataChange} 
       />
     </div>
   );

@@ -14,7 +14,6 @@ import {
 import { MenuList } from "./menu-list";
 import { ActivePatient } from "./active-patient";
 import { PatientSearch } from "./patient-search";
-// import { SearchBox } from "../ui/searchbox";
 
 export function Sidebar() {
   return (
@@ -55,7 +54,7 @@ export function Sidebar() {
             <div className="grid gap-4 py-4">
               <MenuList />
               <ActivePatient />
-              <PatientSearch />
+              <PatientSearch variant="sidebar" />
             </div>
             <SheetFooter>
               <SheetClose asChild>

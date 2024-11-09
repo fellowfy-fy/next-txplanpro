@@ -4,11 +4,15 @@ import React from 'react';
 import { useSession } from "next-auth/react";
 import { Api } from "@/services/api-client";
 import { PatientDTO } from "./create-plan-form";
-import { SearchBox } from "../ui/searchbox";
+import { SearchBox, SearchBoxVariant } from "../ui/searchbox";
 import { cn } from "@/lib/utils";
 import { useSetPatient } from "@/hooks/use-set-patient";
 
-export const PatientSearch: React.FC = () => {
+interface Props {
+  variant?: SearchBoxVariant
+}
+
+export const PatientSearch: React.FC<Props> = ({variant}) => {
   const { data: session } = useSession();
   const [searchQuery, setSearchQuery] = React.useState("");
   const [focused, setFocused] = React.useState(false);
@@ -55,7 +59,7 @@ export const PatientSearch: React.FC = () => {
     <div ref={ref} onFocus={() => setFocused(true)}>
             <div className="w-full relative">
 
-      <SearchBox onSearch={handleSearch} />
+      <SearchBox onSearch={handleSearch} variant={variant}/>
       {searchResults.length > 0 && (
         <div
           className={cn(

@@ -73,8 +73,8 @@ model Patient {
     // business   Business @relation(fields: [businessId], references: [id])
     // businessId Int
 
-    images PatientImage[]
-    plans  Plan[]
+    images PatientImage[] @relation("PatientImages")
+    plans  Plan[]         @relation("PatientPlans")
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -87,10 +87,10 @@ model Plan {
 
     title String? @default("Unknown Title")
 
-    patient   Patient     @relation(fields: [patientId], references: [id])
+    patient   Patient     @relation("PatientPlans", fields: [patientId], references: [id], onDelete: Cascade)
     patientId Int
-    teeth     Tooth[]
-    images    PlanImage[]
+    teeth     Tooth[]     @relation("PlanTeeth")
+    images    PlanImage[] @relation("PlanImages")
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -103,7 +103,7 @@ model Tooth {
     treatments String[]
     note       String?
 
-    plan   Plan @relation(fields: [planId], references: [id])
+    plan   Plan @relation("PlanTeeth", fields: [planId], references: [id], onDelete: Cascade)
     planId Int
 
     createdAt DateTime @default(now())
@@ -134,7 +134,7 @@ model PatientImage {
     imageUrl String
     name     String
 
-    patient   Patient @relation(fields: [patientId], references: [id])
+    patient   Patient @relation("PatientImages", fields: [patientId], references: [id], onDelete: Cascade)
     patientId Int
 
     createdAt DateTime @default(now())
@@ -147,7 +147,7 @@ model PlanImage {
     imageUrl String
     name     String
 
-    plan   Plan @relation(fields: [planId], references: [id])
+    plan   Plan @relation("PlanImages", fields: [planId], references: [id], onDelete: Cascade)
     planId Int
 
     createdAt DateTime @default(now())

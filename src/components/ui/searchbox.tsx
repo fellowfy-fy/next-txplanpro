@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import clsx from "clsx";
 
-type SearchBoxVariant = "sidebar" | "main" | "compact" | "large";
+export type SearchBoxVariant = "sidebar" | "main" | "compact" | "large";
 
 interface SearchBoxProps {
   variant?: SearchBoxVariant;

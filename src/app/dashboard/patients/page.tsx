@@ -8,7 +8,6 @@ import { getUserSession } from "@/lib/get-user-session";
 import { prisma } from "@/prisma/prisma-client";
 import { CreateNewPatientCard } from "@/components/shared/create-new-patient-card";
 import { PatientSearch } from "@/components/shared/patient-search";
-import { ActivePatient } from "@/components/shared/active-patient";
 
 export default async function Patients() {
   const session = await getUserSession();

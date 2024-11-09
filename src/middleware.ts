@@ -6,7 +6,9 @@ export function middleware(request: NextRequest) {
   const session = request.cookies.get('next-auth.session-token')
   const { pathname, searchParams } = request.nextUrl
 
-  console.log("Pathname", pathname)
+  if (pathname.includes('/undefined')) {
+    return NextResponse.redirect(new URL('/dashboard/patients', request.url))
+  }
 
   if (session && searchParams.get('auth') === 'required') {
     const url = new URL(request.url)

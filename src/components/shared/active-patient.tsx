@@ -5,6 +5,7 @@ import React from 'react';
 export const ActivePatient: React.FC = () => {
   const { patient } = useActivePatient();
 
+  
   if (!patient) {
     return <div>Patient not selected</div>;
   }

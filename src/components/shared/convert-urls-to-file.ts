@@ -7,16 +7,16 @@ export async function convertUrlsToFiles<T extends Record<string, File | null>>(
   const uploadedFiles = {} as T;
 
   for (const image of images) {
-    const fieldName = fieldMap[image.type];
+    const fieldName = fieldMap[image.name];
 
     if (fieldName) {
       uploadedFiles[fieldName] = (await urlToFile(
         image.imageUrl,
-        `${image.type}.png`,
+        `${image.name}.png`,
         "image/png"
-      )) as T[keyof T]; // Приведение типа
+      )) as T[keyof T];
     } else {
-      console.warn(`Unknown image type: ${image.type}`);
+      console.warn(`Unknown image name: ${image.name}`);
     }
   }
 
