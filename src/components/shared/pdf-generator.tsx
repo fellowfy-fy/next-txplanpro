@@ -113,7 +113,7 @@ export const PdfGenerator: React.FC<PdfGeneratorProps> = ({
             className="w-full h-full object-cover"
           />
           <div className=" absolute text-white left-10 top-1/3 ">
-            <p className="text-[50px] leading-[50px]">Treatment plan<br />& patient's clinical guide</p>
+            <p className="text-[50px] leading-[50px]">Treatment plan<br />& patient&apos;s clinical guide</p>
             <hr className="mt-3"/>
             <p className="text-[30px] font-thin">Patient Name: <span className="font-semibold">{patientName}</span></p>
             <p className="text-[30px] font-thin">Doctor: <span className="font-semibold">{doctorName}</span></p>
