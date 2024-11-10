@@ -16,12 +16,12 @@ export default function ReadyToPresent() {
         className="font-bold"
       />
 
-      <ElementGrid>
+      {/* <ElementGrid>
         <PatientCard patients={[]} doctorName={""} />
         <PatientCard patients={[]} doctorName={""} />
         <PatientCard patients={[]} doctorName={""} />
         <PatientCard patients={[]} doctorName={""} />
-      </ElementGrid>
+      </ElementGrid> */}
     </Container>
   );
 }

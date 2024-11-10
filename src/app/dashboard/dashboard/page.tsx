@@ -49,12 +49,12 @@ export default function Dashboard() {
         />
       </div>
 
-      <ElementGrid>
+      {/* <ElementGrid> */}
+        {/* <PatientCard patients={[]} doctorName={""} />
         <PatientCard patients={[]} doctorName={""} />
         <PatientCard patients={[]} doctorName={""} />
-        <PatientCard patients={[]} doctorName={""} />
-        <PatientCard patients={[]} doctorName={""} />
-      </ElementGrid>
+        // <PatientCard patients={[]} doctorName={""} /> */}
+      {/* </ElementGrid> */}
 
       <div className="flex justify-center my-7">
         {/* Редирект с кнопки на /all-plans */}

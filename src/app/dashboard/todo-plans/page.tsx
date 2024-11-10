@@ -31,12 +31,12 @@ export default function ToDoPlans() {
         </Button>
       </div>
 
-      <ElementGrid>
+      {/* <ElementGrid>
         <PatientCard patients={[]} doctorName={""} />
         <PatientCard patients={[]} doctorName={""} />
         <PatientCard patients={[]} doctorName={""} />
         <PatientCard patients={[]} doctorName={""} />
-      </ElementGrid>
+      </ElementGrid> */}
     </Container>
   );
 }
