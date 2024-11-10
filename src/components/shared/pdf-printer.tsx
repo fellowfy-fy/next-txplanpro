@@ -16,6 +16,9 @@ interface PrintSectionsProps {
   servicesText: string;
   teeth: any[]; // Замените на правильный тип
   formattedPrices: any[]; // Замените на правильный тип
+  breakImage: string;
+  breakText: string;
+
   countTreatments: (teeth: any[]) => any[]; // Замените на правильный тип
 }
 
@@ -33,6 +36,8 @@ export const PrintSections: React.FC<PrintSectionsProps> = ({
   servicesText,
   teeth,
   formattedPrices,
+  breakImage,
+  breakText,
   countTreatments
 }) => {
    const handlePrint = () => {
@@ -66,7 +71,7 @@ const printContent = `
         }
         .section-content {
           position: relative;
-          aspect-ratio: 842 / 595;
+          aspect-ratio: 842 / 592;
           width: 100%;
           height: 100%;
         }
@@ -82,9 +87,9 @@ const printContent = `
           left: 50%;
           transform: translate(-50%, -50%);
           width: 100vw;
-          height: calc(100vw * (595/842));
+          height: calc(100vw * (592/842));
           max-height: 100vh;
-          max-width: calc(100vh * (842/595));
+          max-width: calc(100vh * (842/592));
         }
         @media print {
           .section {
@@ -185,6 +190,19 @@ const printContent = `
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Break Section -->
+      <div class="section">
+        <div class="section-content">
+          <img src="${breakImage}" class="full-image" />
+          <p style="position: absolute; right: 96px; bottom: 288px; font-size: 32px; font-weight: bold; line-height: 32px;">
+            Surgical & Implant<br />Treatment
+          </p>
+          <p style="position: absolute; right: 80px; bottom: 240px; font-size: 24px; line-height: 24px; font-weight: 300; width: 295px;">
+            ${breakText}
+          </p>
         </div>
       </div>
 

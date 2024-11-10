@@ -55,27 +55,27 @@ export const PdfGenerator: React.FC<PdfGeneratorProps> = ({
       }
     }
   } = planData;
-  const handleDownloadPDF = async () => {
-    const response = await fetch("/api/generate-pdf", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        planData
-      }),
-    });
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "generated.pdf";
-      a.click();
-    } else {
-      console.error("Error downloading the PDF");
-    }
-  };
+  // const handleDownloadPDF = async () => {
+  //   const response = await fetch("/api/generate-pdf", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       planData
+  //     }),
+  //   });
+  //   if (response.ok) {
+  //     const blob = await response.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = "generated.pdf";
+  //     a.click();
+  //   } else {
+  //     console.error("Error downloading the PDF");
+  //   }
+  // };
 
   const settingsPlaceholder = "Please go to settings to add your values";
   const planPlaceholder = "Please go to plan to add your values";
@@ -105,7 +105,7 @@ export const PdfGenerator: React.FC<PdfGeneratorProps> = ({
     <Container>
       <Title text={introText} />
       <div className="flex gap-4 mb-4">
-        <Button onClick={handleDownloadPDF}>Download PDF</Button>
+        {/* <Button onClick={handleDownloadPDF}>Download PDF</Button> */}
         <PrintSections
           introImage={introImage || ''}
           visionImage={visionImage || ''}
@@ -119,6 +119,8 @@ export const PdfGenerator: React.FC<PdfGeneratorProps> = ({
           visionText={visionText}
           servicesText={servicesText}
           teeth={teeth}
+          breakImage={breakImage || ''}
+          breakText={breakText}
           formattedPrices={formattedPrices}
           countTreatments={countTreatments}
         />
