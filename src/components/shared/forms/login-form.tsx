@@ -30,13 +30,11 @@ export const LoginForm: React.FC<Props> = () => {
         ...data,
         redirect: false,
       });
-      console.log(resp);
-      console.log(data);
       if (!resp?.ok) {
         throw Error();
       }
 
-      router.push("/dashboard/patients");
+      router.refresh();
     } catch (error) {
       console.error("Error [LOGIN]", error);
     }

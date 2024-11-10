@@ -11,6 +11,7 @@ import {
 import { FormInput } from "./form-input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 interface Props {
   onClose?: VoidFunction;
@@ -37,7 +38,16 @@ export const RegisterForm: React.FC<Props> = () => {
         password: data.password,
       });
 
-      router.push("/dashboard/patients");
+      const resp = await signIn("credentials", {
+        ...data,
+        redirect: false,
+      });
+      
+      if (!resp?.ok) {
+        throw Error();
+      }
+
+      router.refresh();
     } catch (error) {
       return console.log("Ошибка регистрации" + error);
     }

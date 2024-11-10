@@ -33,6 +33,7 @@ export interface Content {
 }
 
 const formatServiceName = (type: string) => {
+  if (!type) return "";
   return type
     .split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -76,13 +77,13 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
           initData.prices && initData.prices.length
             ? initData.prices
             : [
-                { type: "extracted", price: 200 },
-                { type: "tooth_crown", price: 100 },
-                { type: "implant_crown", price: 100 },
-                { type: "implant", price: 100 },
-                { type: "root_recession", price: 100 },
-                { type: "altered_passive_eruption", price: 100 },
-                { type: "filling", price: 100 },
+                { name: "extracted", price: 200 },
+                { name: "tooth_crown", price: 100 },
+                { name: "implant_crown", price: 100 },
+                { name: "implant", price: 100 },
+                { name: "root_recession", price: 100 },
+                { name: "altered_passive_eruption", price: 100 },
+                { name: "filling", price: 100 },
               ]
         );
 
@@ -91,10 +92,10 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
           initData.content && initData.content.length
             ? initData.content
             : [
-                { type: "intro", content: "" },
-                { type: "vision", content: "" },
-                { type: "break", content: "" },
-                { type: "services", content: "" },
+                { name: "intro", content: "" },
+                { name: "vision", content: "" },
+                { name: "break", content: "" },
+                { name: "services", content: "" },
               ]
         );
 
