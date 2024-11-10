@@ -45,9 +45,9 @@ export async function registerUser(body: Prisma.UserCreateInput) {
     });
 
     if (user) {
-      if (!user.verified) {
-        throw new Error('Почта не подтверждена');
-      }
+      // if (!user.verified) {
+      //   throw new Error('Почта не подтверждена');
+      // }
 
       throw new Error('Пользователь уже существует');
     }

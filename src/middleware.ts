@@ -3,8 +3,11 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const session = request.cookies.get('next-auth.session-token')
+  const session = request.cookies.get('next-auth.session-token') ||
+    request.cookies.get('__Secure-next-auth.session-token')
   const { pathname, searchParams } = request.nextUrl
+
+
 
   if (pathname.includes('/undefined')) {
     return NextResponse.redirect(new URL('/dashboard/patients', request.url))
