@@ -17,7 +17,7 @@ import {
 import { countTreatments } from "@/lib/format-plan-data";
 import { countTreatmentsWithPrices } from "@/lib/format-price-data";
 import { PrintSections } from "./pdf-printer";
-
+// Доработать пдф
 type PlanWithRelations = Plan & {
   teeth: Tooth[];
   images: PlanImage[];
