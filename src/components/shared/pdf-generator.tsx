@@ -16,6 +16,7 @@ import {
 } from "@prisma/client";
 import { countTreatments } from "@/lib/format-plan-data";
 import { countTreatmentsWithPrices } from "@/lib/format-price-data";
+import { PrintSections } from "./pdf-printer";
 
 type PlanWithRelations = Plan & {
   teeth: Tooth[];
@@ -103,7 +104,25 @@ export const PdfGenerator: React.FC<PdfGeneratorProps> = ({
   return (
     <Container>
       <Title text={introText} />
-      <Button onClick={handleDownloadPDF}>Download PDF</Button>
+      <div className="flex gap-4 mb-4">
+        <Button onClick={handleDownloadPDF}>Download PDF</Button>
+        <PrintSections
+          introImage={introImage || ''}
+          visionImage={visionImage || ''}
+          leftSideImage={leftSideImage || ''}
+          rightSideImage={rightSideImage || ''}
+          lowerOcclusalImage={lowerOcclusalImage || ''}
+          upperOcclusalImage={upperOcclusalImage || ''}
+          panoramicXrayImage={panoramicXrayImage || ''}
+          patientName={patientName}
+          doctorName={doctorName}
+          visionText={visionText}
+          servicesText={servicesText}
+          teeth={teeth}
+          formattedPrices={formattedPrices}
+          countTreatments={countTreatments}
+        />
+      </div>
       <section className="flex flex-col items-center mt-10">
         <Title text="Intro Slide" size="md" />
         <div className="w-[842px] h-[595px] relative">
