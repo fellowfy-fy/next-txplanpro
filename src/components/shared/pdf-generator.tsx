@@ -14,6 +14,8 @@ import {
   Tooth,
   User,
 } from "@prisma/client";
+import { countTreatments } from "@/lib/format-plan-data";
+import { countTreatmentsWithPrices } from "@/lib/format-price-data";
 
 type PlanWithRelations = Plan & {
   teeth: Tooth[];
@@ -96,6 +98,7 @@ export const PdfGenerator: React.FC<PdfGeneratorProps> = ({
   const lowerOcclusalImage = planImages.find(item => item.name === 'lower_occlusal')?.imageUrl
   const panoramicXrayImage = planImages.find(item => item.name === 'panoramic_xray')?.imageUrl
 
+  const formattedPrices = countTreatmentsWithPrices(teeth, prices);
 
   return (
     <Container>
@@ -199,13 +202,20 @@ export const PdfGenerator: React.FC<PdfGeneratorProps> = ({
             </div>
             <div className="flex-1 text-center p-4">
               <p className="text-[20px] leading-6 font-bold mb-3">PROCEDURES</p>
-              <p className="text-left">заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки</p>
-              {/* <p className="text-left">{JSON.stringify(teeth, null, 2)}</p> */}
+              {countTreatments(teeth).map(item => (
+                <div key={item.name} className="flex justify-between mb-1">
+                  <span>{item.name}</span>
+                  <span className="font-semibold">{item.count}</span>
+                </div>
+              ))}
             </div>
             <div className="flex-1 text-center p-4">
               <p className="text-[20px] leading-6 font-bold mb-3">FINANCIAL PLAN</p>
-              <p className="text-left">заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки</p>
-              {/* <p className="text-left">{JSON.stringify(prices, null, 2)}</p> */}
+              {formattedPrices.map(item => (
+              <div className="text-left" key={item.name}>
+                {item.name} (${item.pricePerUnit} × {item.count}) = ${item.totalPrice}
+              </div>
+            ))}
             </div>
           </div>
         </div>
