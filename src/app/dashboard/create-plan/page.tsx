@@ -1,4 +1,3 @@
-'use client'
 import { Container } from "@/components/ui/container";
 import { CreatePlanForm } from "@/components/shared/create-plan-form";
 import { PageDescription } from "@/components/ui/page-description";
