@@ -109,9 +109,11 @@ export const PdfGenerator: React.FC<PdfGeneratorProps> = ({
             alt={introImage ? "Intro Image" : settingsPlaceholder}
             className="w-full h-full object-cover"
           />
-          <div className="border-[5px] border-white ">
-          <p className="absolute left-3 top-1/2">Patient Name: {patientName}</p>
-          <p className="absolute left-0 top-[55%]">Doctor: {doctorName}</p>
+          <div className=" absolute text-white left-10 top-1/3 ">
+            <p className="text-[50px] leading-[50px]">Treatment plan<br />& patient's clinical guide</p>
+            <hr className="mt-3"/>
+            <p className="text-[30px] font-thin">Patient Name: <span className="font-semibold">{patientName}</span></p>
+            <p className="text-[30px] font-thin">Doctor: <span className="font-semibold">{doctorName}</span></p>
           </div>
         </div>
         <Title text="Vision Slide" size="md" />
@@ -121,47 +123,54 @@ export const PdfGenerator: React.FC<PdfGeneratorProps> = ({
             alt={visionImage ? "Vision Image" : settingsPlaceholder}
             className="w-full h-full object-cover"
           />
-          <p className="absolute right-1/2 top-[30%]">{visionText}</p>
-          <p className="absolute right-0 top-[70%]">Doctor: {doctorName}</p>
+          <p className="absolute left-[160px] top-[140px] text-[50px] leading-[50px] text-white text-right">Our<br />Vision &<br />Approach</p>
+          <p className="absolute right-56 bottom-56 text-[20px] text-white font-light max-w-[300px]">{visionText}</p>
         </div>
 
         <Title text="Sides Slide" size="md" />
-        <div className="w-[842px] h-[595px] flex justify-between items-end">
-          <div className="flex flex-col items-center">
-            <img
-              src={leftSideImage}
-              alt={leftSideImage ? "Left Side Image" : planPlaceholder}
-              className="object-cover mb-2 w-[400px] h-[300px]"
-            />
-            <p className="text-center">Left Side</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <img
-              src={rightSideImage}
-              alt={rightSideImage ? "Right Side Image" : planPlaceholder}
-              className="object-cover mb-2 w-[400px] h-[300px]"
-            />
-            <p className="text-center">Right Side</p>
+        <div className="w-[842px] h-[595px] flex flex-col justify-center items-center text-center">
+          <p className="text-[30px] font-bold mb-5">DIAGNOSIS<br />VISUALISATION</p>
+          <div className=" flex flex-row gap-10 items-end">
+            <div className="flex flex-col items-center">
+              <p className="text-center text-[30px] font-bold mb-16">UPPER JAW</p>
+              <img
+                src={leftSideImage}
+                alt={leftSideImage ? "Left Side Image" : planPlaceholder}
+                className="object-cover mb-2 w-[400px] h-[300px]"
+              />
+            </div>
+            <div className="flex flex-col items-center">
+              <p className="text-center text-[30px] font-bold mb-16">LOWER JAW</p>
+              <img
+                src={rightSideImage}
+                alt={rightSideImage ? "Right Side Image" : planPlaceholder}
+                className="object-cover mb-2 w-[400px] h-[300px]"
+              />
+            </div>
           </div>
         </div>
 
+
         <Title text="Occlusal Slide" size="md" />
-        <div className="w-[842px] h-[595px] flex justify-between items-end">
-          <div className="flex flex-col items-center">
-            <img
+                <div className="w-[842px] h-[595px] flex flex-col justify-center items-center text-center">
+          <p className="text-[30px] font-bold mb-5">DIAGNOSIS<br />VISUALISATION</p>
+          <div className=" flex flex-row gap-10 items-end">
+            <div className="flex flex-col items-center">
+              <p className="text-center text-[30px] font-bold mb-16">LEFT SIDE</p>
+         <img
               src={lowerOcclusalImage}
               alt={lowerOcclusalImage ? "Lower Occlusal Image" : planPlaceholder}
               className="object-cover mb-2 w-[400px] h-[300px]"
             />
-            <p className="text-center">Lower Occlusal</p>
-          </div>
-          <div className="flex flex-col items-center">
+            </div>
+            <div className="flex flex-col items-center">
+              <p className="text-center text-[30px] font-bold mb-16">RIGHT SIDE</p>
             <img
               src={upperOcclusalImage}
               alt={upperOcclusalImage ? "Upper Occlusal Image" : planPlaceholder}
               className="object-cover mb-2 w-[400px] h-[300px]"
             />
-            <p className="text-center">Upper Occlusal</p>
+            </div>
           </div>
         </div>
 
@@ -172,7 +181,8 @@ export const PdfGenerator: React.FC<PdfGeneratorProps> = ({
             alt={breakImage ? "Break Image" : settingsPlaceholder}
             className="w-full h-full object-cover"
           />
-          <p className="absolute right-0 top-[70%]">{breakText}</p>
+            <p className="absolute text-[32px] font-bold leading-8 right-24 bottom-72">Surgical & Implant<br />Treatment</p>
+            <p className="absolute text-[24px] leading-6 right-20 bottom-60 font-light w-[295px]">{breakText}</p>
         </div>
 
         <Title text="X-ray Slide" size="md" />
@@ -183,14 +193,19 @@ export const PdfGenerator: React.FC<PdfGeneratorProps> = ({
             className="w-full object-cover mb-4 h-[300px]"
           />
           <div className="flex justify-between flex-grow">
-            <div className="flex-1 text-center p-4">
+            <div className="flex-1 text-left p-4">
+              <p className="text-[20px] leading-6 font-bold mb-3">SURGICAL & IMPLANT<br />TREATMENT</p>
               <p>{servicesText}</p>
             </div>
             <div className="flex-1 text-center p-4">
-              <p>{}</p>
+              <p className="text-[20px] leading-6 font-bold mb-3">PROCEDURES</p>
+              <p className="text-left">заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки</p>
+              {/* <p className="text-left">{JSON.stringify(teeth, null, 2)}</p> */}
             </div>
             <div className="flex-1 text-center p-4">
-              <p>{}</p>
+              <p className="text-[20px] leading-6 font-bold mb-3">FINANCIAL PLAN</p>
+              <p className="text-left">заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки заглушки</p>
+              {/* <p className="text-left">{JSON.stringify(prices, null, 2)}</p> */}
             </div>
           </div>
         </div>
