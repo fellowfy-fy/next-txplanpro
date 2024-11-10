@@ -108,7 +108,7 @@ const TeethDiagram: React.FC<TeethDiagramProps> = ({
             </div>
           ))}
         </div>
-
+          {/* Пофиксить Дефолт */}
         {/* Диаграмма зубов */}
         <div className="flex-grow rounded-lg p-4">
           <div className="flex justify-center items-baseline mb-4">
