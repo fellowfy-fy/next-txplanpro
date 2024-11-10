@@ -23,12 +23,12 @@ interface Props {
 }
 
 export interface Service {
-  type: string;
+  name: string;
   price: number;
 }
 
 export interface Content {
-  type: string;
+  name: string;
   content: string;
 }
 
@@ -40,18 +40,19 @@ const formatServiceName = (type: string) => {
 };
 
 export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
+
   const { data: session } = useSession();
   const methods = useForm<TBusinessFormValues>({
     resolver: zodResolver(businessSchema),
     defaultValues: {
       servicePrices: [
-        { type: "extracted", price: 200 },
-        { type: "tooth_crown", price: 100 },
-        { type: "implant_crown", price: 100 },
-        { type: "implant", price: 100 },
-        { type: "root_recession", price: 100 },
-        { type: "altered_passive_eruption", price: 100 },
-        { type: "filling", price: 100 },
+        { name: "extracted", price: 200 },
+        { name: "tooth_crown", price: 100 },
+        { name: "implant_crown", price: 100 },
+        { name: "implant", price: 100 },
+        { name: "root_recession", price: 100 },
+        { name: "altered_passive_eruption", price: 100 },
+        { name: "filling", price: 100 },
       ],
       uploadedFiles: {
         intro: null,
@@ -59,10 +60,10 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
         break: null,
       },
       content: [
-        { type: "intro", content: "" },
-        { type: "vision", content: "" },
-        { type: "break", content: "" },
-        { type: "services", content: "" },
+        { name: "intro", content: "" },
+        { name: "vision", content: "" },
+        { name: "break", content: "" },
+        { name: "services", content: "" },
       ],
     },
   });
@@ -185,7 +186,7 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
           <div key={index}>
             <FormInput
               name={`servicePrices.${index}.price`}
-              label={formatServiceName(service.type)}
+              label={formatServiceName(service.name)}
               type="number"
               isNumber={true}
             />
@@ -198,7 +199,7 @@ export const BusinessForm: React.FC<Props> = ({ className, initData }) => {
           <div key={index}>
             <FormInput
               name={`content.${index}.content`}
-              label={formatServiceName(content.type)}
+              label={formatServiceName(content.name)}
             />
           </div>
         ))}

@@ -19,7 +19,7 @@ export const CreateNewPatientCard = () => {
     defaultValues: {
       fullName: "",
       address: "",
-      birthDate: "",
+      birthDate: new Date(),
     },
   });
 

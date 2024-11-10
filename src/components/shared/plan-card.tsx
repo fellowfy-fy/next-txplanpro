@@ -6,7 +6,7 @@ import {
 import { useRouter } from "next/navigation";
 import { Patient, Plan, UserRole } from "@prisma/client";
 import { Button } from "../ui/button";
-import { Loader, Pencil, Trash2 } from "lucide-react";
+import { FileText, Loader, Pencil, Trash2 } from "lucide-react";
 import { Api } from "@/services/api-client";
 import toast from 'react-hot-toast';
 import { useSetPatient } from "@/hooks/use-set-patient";
@@ -30,31 +30,31 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 }) => {
   const router = useRouter();
   // const handlePatientClick = useSetPatient();
-  // const [loadingStates, setLoadingStates] = React.useState<Record<number, boolean>>({});
+  const [loadingStates, setLoadingStates] = React.useState<Record<number, boolean>>({});
   // const  { patient: activePatient }  = useActivePatient()
  
-  // const handleDelete = async (patientId: number, doctorId: number) => {
-  //   setLoadingStates(prev => ({ ...prev, [patientId]: true }));
+  const handleDelete = async (planId: number) => {
+    setLoadingStates(prev => ({ ...prev, [planId]: true }));
     
-  //   try {
-  //     const response = await Api.patients.deleteId(patientId, doctorId);
+    try {
+      const response = await Api.plans.deleteId(planId);
      
-  //     if (response.message) {
-  //       toast.success(response.message, {
-  //         position: 'bottom-right',
-  //         duration: 3000,
-  //       });
-  //       router.refresh();
-  //     }
-  //   } catch (error: any) {
-  //     toast.error(error.response?.data?.error || 'Failed to delete patient', {
-  //       position: 'bottom-right',
-  //       duration: 3000,
-  //     });
-  //   } finally {
-  //     setLoadingStates(prev => ({ ...prev, [patientId]: false }));
-  //   }
-  // };
+      if (response.message) {
+        toast.success(response.message, {
+          position: 'bottom-right',
+          duration: 3000,
+        });
+        router.refresh();
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.error || 'Failed to delete plan', {
+        position: 'bottom-right',
+        duration: 3000,
+      });
+    } finally {
+      setLoadingStates(prev => ({ ...prev, [planId]: false }));
+    }
+  };
 
   return (
     <>
@@ -65,7 +65,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               <div className="space-y-1">
                 <div className="flex justify-between items-center">
                   <p className="text-xl font-bold leading-none pb-2">
-                    Plan: {plan.title}
+                   {plan.title}
                   </p>
                   {/* <Button
                     variant={patient.id === activePatient?.id ? 'success' : 'secondary'}
@@ -82,39 +82,38 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                 {/* <p className="text-sm text-muted-foreground">{}</p> */}
               </div>
             </div>
-            <hr />
+            {/* <hr /> */}
             <div className="flex flex-row justify-between items-center">
               {/* <p className="text-lg leading-none flex flex-row">
                 by dr. {doctor?.name}
               </p> */}
             </div>
-            <hr />
+            {/* <hr /> */}
             <div className="flex flex-row justify-start gap-3 items-center">
               <Button
-                variant="default"
-                onClick={() => {router.push(`/dashboard/edit-plan/${plan.id}`)}}
-              >
-                Edit Plan
-              </Button>
-              {/* <Button
-                variant="outline"
                 onClick={() => {
-                  router.push(`/dashboard/pdf/${patient.id}`);
+                  router.push(`/dashboard/pdf/${plan.id}`);
                 }}
               >
-                <Pencil />
-              </Button> */}
-              {/* <Button
-                variant="destructive"
-                onClick={() => {handleDelete(patient.id, Number(doctor?.id))}}
-                disabled={loadingStates[patient.id]}
+                <FileText />
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => {router.push(`/dashboard/edit-plan/${plan.id}`)}}
               >
-                {!loadingStates[patient.id] ? (
+                <Pencil />
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={() => {handleDelete(plan.id)}}
+                disabled={loadingStates[plan.id]}
+              >
+                {!loadingStates[plan.id] ? (
                   <Trash2 />
                 ) : (
                   <Loader className="w-5 h-5 animate-spin" />
                 )}
-              </Button> */}
+              </Button>
             </div>
           </CardContent>
         </Card>

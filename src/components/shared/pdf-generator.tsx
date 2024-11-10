@@ -8,30 +8,50 @@ import {
   BusinessImage,
   Patient,
   PatientImage,
+  Plan,
+  PlanImage,
   Service,
   Tooth,
   User,
 } from "@prisma/client";
 
-interface PatientPDFProps {
-  patient: Patient;
-  doctor: User;
-  patientImages: PatientImage[];
-  doctorImages: BusinessImage[];
-  prices: Service[];
-  content: BusinessContent[];
+type PlanWithRelations = Plan & {
   teeth: Tooth[];
+  images: PlanImage[];
+  patient: Patient & {
+    images: PatientImage[];
+    doctor: User & {
+      images: BusinessImage[];
+      prices: Service[];
+      content: BusinessContent[];
+    };
+  };
+};
+
+interface PdfGeneratorProps {
+  planData: PlanWithRelations;
 }
 
-export const PdfGenerator: React.FC<PatientPDFProps> = ({
-  patient,
-  patientImages,
-  teeth,
-  doctorImages,
-  prices,
-  doctor,
-  content
+export const PdfGenerator: React.FC<PdfGeneratorProps> = ({
+  planData
 }) => {
+  const {
+    title: planTitle,
+    teeth,
+    images: planImages,
+    patient: {
+      fullName: patientFullName,
+      birthDate,
+      address,
+      images: patientImages,
+      doctor: {
+        fullName: doctorFullName,
+        images: doctorImages,
+        prices,
+        content
+      }
+    }
+  } = planData;
   const handleDownloadPDF = async () => {
     const response = await fetch("/api/generate-pdf", {
       method: "POST",
@@ -39,13 +59,7 @@ export const PdfGenerator: React.FC<PatientPDFProps> = ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        patient,
-        doctor,
-        patientImages,
-        doctorImages,
-        prices,
-        content,
-        teeth,
+        planData
       }),
     });
     if (response.ok) {
@@ -60,54 +74,63 @@ export const PdfGenerator: React.FC<PatientPDFProps> = ({
     }
   };
 
-  const introText = content.find(item => item.type === 'intro')?.content || "None"
-  const visionText = content.find(item => item.type === 'vision')?.content || "None"
-  const breakText = content.find(item => item.type === 'break')?.content || "None"
-  const servicesText = content.find(item => item.type === 'services')?.content || "None"
+  const settingsPlaceholder = "Please go to settings to add your values";
+  const planPlaceholder = "Please go to plan to add your values";
 
-  const patientName = patient.fullName
-  const doctorName = doctor.fullName
+  const introText = content.find(item => item.name === 'intro')?.content || settingsPlaceholder
+  const visionText = content.find(item => item.name === 'vision')?.content || settingsPlaceholder
+  const breakText = content.find(item => item.name === 'break')?.content || settingsPlaceholder
+  const servicesText = content.find(item => item.name === 'services')?.content || settingsPlaceholder
 
-  const introImage = doctorImages.find(item => item.type === 'intro')?.imageUrl
-  const visionImage = doctorImages.find(item => item.type === 'vision')?.imageUrl
-  const breakImage = doctorImages.find(item => item.type === 'break')?.imageUrl
+  const patientName = patientFullName
+  const doctorName = doctorFullName
 
-  const leftSideImage = patientImages.find(item => item.type === 'side_left')?.imageUrl
-  const rightSideImage = patientImages.find(item => item.type === 'side_right')?.imageUrl
-  const upperOcclusalImage = patientImages.find(item => item.type === 'upper_occlusal')?.imageUrl
-  const lowerOcclusalImage = patientImages.find(item => item.type === 'lower_occlusal')?.imageUrl
-  const panoramicXrayImage = patientImages.find(item => item.type === 'panoramic_xray')?.imageUrl
+  const introImage = doctorImages.find(item => item.name === 'intro')?.imageUrl
+  const visionImage = doctorImages.find(item => item.name === 'vision')?.imageUrl
+  const breakImage = doctorImages.find(item => item.name === 'break')?.imageUrl
+
+
+  const leftSideImage = planImages.find(item => item.name === 'side_left')?.imageUrl
+  const rightSideImage = planImages.find(item => item.name === 'side_right')?.imageUrl
+  const upperOcclusalImage = planImages.find(item => item.name === 'upper_occlusal')?.imageUrl
+  const lowerOcclusalImage = planImages.find(item => item.name === 'lower_occlusal')?.imageUrl
+  const panoramicXrayImage = planImages.find(item => item.name === 'panoramic_xray')?.imageUrl
+
 
   return (
     <Container>
       <Title text={introText} />
       <Button onClick={handleDownloadPDF}>Download PDF</Button>
       <section className="flex flex-col items-center mt-10">
+        <Title text="Intro Slide" size="md" />
         <div className="w-[842px] h-[595px] relative">
           <img
             src={introImage}
-            alt=""
+            alt={introImage ? "Intro Image" : settingsPlaceholder}
             className="w-full h-full object-cover"
           />
-          <p className="absolute left-0 top-1/2">Patient Name: {patientName}</p>
+          <div className="border-[5px] border-white ">
+          <p className="absolute left-3 top-1/2">Patient Name: {patientName}</p>
           <p className="absolute left-0 top-[55%]">Doctor: {doctorName}</p>
+          </div>
         </div>
-
+        <Title text="Vision Slide" size="md" />
         <div className="w-[842px] h-[595px] relative">
           <img
             src={visionImage}
-            alt="Vision Image"
+            alt={visionImage ? "Vision Image" : settingsPlaceholder}
             className="w-full h-full object-cover"
           />
           <p className="absolute right-1/2 top-[30%]">{visionText}</p>
           <p className="absolute right-0 top-[70%]">Doctor: {doctorName}</p>
         </div>
 
+        <Title text="Sides Slide" size="md" />
         <div className="w-[842px] h-[595px] flex justify-between items-end">
           <div className="flex flex-col items-center">
             <img
               src={leftSideImage}
-              alt="Left Side Image"
+              alt={leftSideImage ? "Left Side Image" : planPlaceholder}
               className="object-cover mb-2 w-[400px] h-[300px]"
             />
             <p className="text-center">Left Side</p>
@@ -115,18 +138,19 @@ export const PdfGenerator: React.FC<PatientPDFProps> = ({
           <div className="flex flex-col items-center">
             <img
               src={rightSideImage}
-              alt=""
+              alt={rightSideImage ? "Right Side Image" : planPlaceholder}
               className="object-cover mb-2 w-[400px] h-[300px]"
             />
             <p className="text-center">Right Side</p>
           </div>
         </div>
 
+        <Title text="Occlusal Slide" size="md" />
         <div className="w-[842px] h-[595px] flex justify-between items-end">
           <div className="flex flex-col items-center">
             <img
               src={lowerOcclusalImage}
-              alt="Upper Occlusal"
+              alt={lowerOcclusalImage ? "Lower Occlusal Image" : planPlaceholder}
               className="object-cover mb-2 w-[400px] h-[300px]"
             />
             <p className="text-center">Lower Occlusal</p>
@@ -134,26 +158,28 @@ export const PdfGenerator: React.FC<PatientPDFProps> = ({
           <div className="flex flex-col items-center">
             <img
               src={upperOcclusalImage}
-              alt=""
+              alt={upperOcclusalImage ? "Upper Occlusal Image" : planPlaceholder}
               className="object-cover mb-2 w-[400px] h-[300px]"
             />
             <p className="text-center">Upper Occlusal</p>
           </div>
         </div>
 
+        <Title text="Break Slide" size="md" />
         <div className="w-[842px] h-[595px] relative">
           <img
             src={breakImage}
-            alt=""
+            alt={breakImage ? "Break Image" : settingsPlaceholder}
             className="w-full h-full object-cover"
           />
           <p className="absolute right-0 top-[70%]">{breakText}</p>
         </div>
 
+        <Title text="X-ray Slide" size="md" />
         <div className="w-[842px] h-[595px] flex flex-col">
           <img
             src={panoramicXrayImage}
-            alt=""
+            alt={panoramicXrayImage ? "X-ray Image" : planPlaceholder}
             className="w-full object-cover mb-4 h-[300px]"
           />
           <div className="flex justify-between flex-grow">
@@ -161,10 +187,10 @@ export const PdfGenerator: React.FC<PatientPDFProps> = ({
               <p>{servicesText}</p>
             </div>
             <div className="flex-1 text-center p-4">
-              <p>{servicesText}</p>
+              <p>{}</p>
             </div>
             <div className="flex-1 text-center p-4">
-              <p>{servicesText}</p>
+              <p>{}</p>
             </div>
           </div>
         </div>

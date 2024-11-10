@@ -35,6 +35,14 @@ export const FormInput: React.FC<Props> = ({
   const value = watch(name);
   const errorText = errors[name]?.message as string;
 
+  const formatValue = React.useMemo(() => {
+    if (type === 'date' && value) {
+      const date = new Date(value);
+      return date.toISOString().split('T')[0];
+    }
+    return value;
+  }, [type, value]);
+
   const onClickClear = () => {
     setValue(name, "", { shouldValidate: true });
   };
@@ -53,6 +61,7 @@ export const FormInput: React.FC<Props> = ({
           {...register(name, {
             setValueAs: isNumber ? (value: string) => Number(value) : undefined,
           })}
+          value={formatValue}
           type={type}
           {...props}
         />

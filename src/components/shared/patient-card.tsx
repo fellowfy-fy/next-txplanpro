@@ -65,7 +65,7 @@ export const PatientCard: React.FC<PatientCardProps> = ({
               <div className="space-y-1">
                 <div className="flex justify-between items-center">
                   <p className="text-xl font-bold leading-none pb-2">
-                    Patient: {patient.fullName}
+                    {patient.fullName}
                   </p>
                   <Button
                     variant={patient.id === activePatient?.id ? 'success' : 'secondary'}
@@ -102,7 +102,7 @@ export const PatientCard: React.FC<PatientCardProps> = ({
               <Button
                 variant="outline"
                 onClick={() => {
-                  router.push(`/dashboard/pdf/${patient.id}`);
+                  router.push(`/dashboard/patients/edit/${patient.id}`);
                 }}
               >
                 <Pencil />

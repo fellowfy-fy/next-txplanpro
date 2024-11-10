@@ -19,7 +19,7 @@ export default async function EditPlans({ params }: { params: { planId: string }
 
   return (
     <Container>
-      <Title text="All TxPlans" size="lg" className="font-bold" />
+      <Title text="Edit Plan" size="lg" className="font-bold" />
       {/* Поиск по плану */}
       <ActivePatient />
       {plan && <PlanUpdateForm plan={plan} doctorId={doctorId} teeth={teeth} images={images} />}

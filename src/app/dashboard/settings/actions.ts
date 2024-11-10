@@ -11,16 +11,16 @@ export const upsertServices = async ({ services, doctorId }: { services: Service
       const servicesUpsertPromises = services.map((service) =>
         prisma.service.upsert({
           where: {
-            doctorId_type: {
+            doctorId_name: {
               doctorId: doctorId,
-              type: service.type,
+              name: service.name,
             },
           },
           update: {
             price: service.price,
           },
           create: {
-            type: service.type,
+            name: service.name,
             price: service.price,
             doctorId: doctorId,
           },
@@ -44,16 +44,16 @@ export const upsertContent = async ({ contents, doctorId }: { contents: Content[
       const contentsUpsertPromises = contents.map((content) =>
         prisma.businessContent.upsert({
           where: {
-            doctorId_type: {
+            doctorId_name: {
               doctorId: doctorId,
-              type: content.type,
+              name: content.name,
             },
           },
           update: {
             content: content.content,
           },
           create: {
-            type: content.type,
+            name: content.name,
             content: content.content,
             doctorId: doctorId,
           },

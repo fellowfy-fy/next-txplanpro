@@ -1,15 +1,22 @@
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import { NextResponse } from "next/server";
-import { Patient, User, PatientImage, BusinessImage, Service, BusinessContent, Tooth } from "@prisma/client";
+import { Patient, User, PatientImage, BusinessImage, Service, BusinessContent, Tooth, PlanImage, Plan } from "@prisma/client";
 
-interface GeneratePDFParams {
-  patient: Patient;
-  doctor: User;
-  patientImages: PatientImage[];
-  doctorImages: BusinessImage[];
-  prices: Service[];
-  content: BusinessContent[];
+type PlanWithRelations = Plan & {
   teeth: Tooth[];
+  images: PlanImage[];
+  patient: Patient & {
+    images: PatientImage[];
+    doctor: User & {
+      images: BusinessImage[];
+      prices: Service[];
+      content: BusinessContent[];
+    };
+  };
+};
+
+interface PdfGeneratorProps {
+  planData: PlanWithRelations;
 }
 
 async function fetchImageAsBytes(imageUrl: string) {
@@ -46,15 +53,26 @@ async function embedImage(pdfDoc: PDFDocument, imageData: { bytes: ArrayBuffer, 
 }
 
 async function generatePDF({
-  patient,
-  doctor,
-  patientImages,
-  doctorImages,
-  content,
-  prices,
-  teeth
-}: GeneratePDFParams) {
+  planData
+}: PdfGeneratorProps) {
   const pdfDoc = await PDFDocument.create();
+  const {
+    title: planTitle,
+    teeth,
+    images: planImages,
+    patient: {
+      fullName: patientFullName,
+      birthDate,
+      address,
+      images: patientImages,
+      doctor: {
+        fullName: doctorFullName,
+        images: doctorImages,
+        prices,
+        content
+      }
+    }
+  } = planData;
 
   // Загружаем шрифт с поддержкой Unicode
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -63,21 +81,21 @@ async function generatePDF({
   const landscapeHeight = 595;
 
   // Get content texts
-  const introText = content.find(item => item.type === 'intro')?.content || "None";
-  const visionText = content.find(item => item.type === 'vision')?.content || "None";
-  const breakText = content.find(item => item.type === 'break')?.content || "None";
-  const servicesText = content.find(item => item.type === 'services')?.content || "None";
+  const introText = content.find(item => item.name === 'intro')?.content || "None";
+  const visionText = content.find(item => item.name === 'vision')?.content || "None";
+  const breakText = content.find(item => item.name === 'break')?.content || "None";
+  const servicesText = content.find(item => item.name === 'services')?.content || "None";
 
   // Get images URLs
-  const introImageUrl = doctorImages.find(item => item.type === 'intro')?.imageUrl;
-  const visionImageUrl = doctorImages.find(item => item.type === 'vision')?.imageUrl;
-  const breakImageUrl = doctorImages.find(item => item.type === 'break')?.imageUrl;
+  const introImageUrl = doctorImages.find(item => item.name === 'intro')?.imageUrl;
+  const visionImageUrl = doctorImages.find(item => item.name === 'vision')?.imageUrl;
+  const breakImageUrl = doctorImages.find(item => item.name === 'break')?.imageUrl;
 
-  const leftSideImageUrl = patientImages.find(item => item.type === 'side_left')?.imageUrl;
-  const rightSideImageUrl = patientImages.find(item => item.type === 'side_right')?.imageUrl;
-  const upperOcclusalImageUrl = patientImages.find(item => item.type === 'upper_occlusal')?.imageUrl;
-  const lowerOcclusalImageUrl = patientImages.find(item => item.type === 'lower_occlusal')?.imageUrl;
-  const panoramicXrayImageUrl = patientImages.find(item => item.type === 'panoramic_xray')?.imageUrl;
+  const leftSideImageUrl = patientImages.find(item => item.name === 'side_left')?.imageUrl;
+  const rightSideImageUrl = patientImages.find(item => item.name === 'side_right')?.imageUrl;
+  const upperOcclusalImageUrl = patientImages.find(item => item.name === 'upper_occlusal')?.imageUrl;
+  const lowerOcclusalImageUrl = patientImages.find(item => item.name === 'lower_occlusal')?.imageUrl;
+  const panoramicXrayImageUrl = patientImages.find(item => item.name === 'panoramic_xray')?.imageUrl;
 
   // Page 1 - Intro
   const page1 = pdfDoc.addPage([landscapeWidth, landscapeHeight]);
@@ -95,14 +113,14 @@ async function generatePDF({
       }
     }
   }
-  page1.drawText(`Patient Name: ${patient.fullName}`, {
+  page1.drawText(`Patient Name: ${patientFullName}`, {
     x: 50,
     y: landscapeHeight / 2,
     size: 24,
     font,
     color: rgb(0, 0, 0),
   });
-  page1.drawText(`Doctor: ${doctor.fullName}`, {
+  page1.drawText(`Doctor: ${doctorFullName}`, {
     x: 50,
     y: (landscapeHeight / 2) - 50,
     size: 24,
@@ -133,7 +151,7 @@ async function generatePDF({
     font,
     color: rgb(0, 0, 0),
   });
-  page2.drawText(`Doctor: ${doctor.fullName}`, {
+  page2.drawText(`Doctor: ${doctorFullName}`, {
     x: landscapeWidth - 300,
     y: landscapeHeight * 0.3,
     size: 24,

@@ -9,14 +9,14 @@ const prisma = new PrismaClient();
 
 export const createPatient = async (
   { fullName, address, birthDate, doctorId }:
-    { fullName: string, address: string, birthDate: string, doctorId: number },
+    { fullName: string, address: string, birthDate: Date, doctorId: number },
 ) => {
   try {
     const patient = await prisma.patient.create({
       data: {
         fullName,
         address,
-        birthDate: new Date(birthDate),
+        birthDate: birthDate,
         doctorId: doctorId,
       },
     });
