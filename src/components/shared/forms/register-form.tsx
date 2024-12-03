@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +14,7 @@ import { signIn } from "next-auth/react";
 
 interface Props {
   onClose?: VoidFunction;
-  onClickLogin?: VoidFunction;
+  onSwitchToRegister?: () => void;
 }
 
 export const RegisterForm: React.FC<Props> = () => {
@@ -37,19 +36,16 @@ export const RegisterForm: React.FC<Props> = () => {
         fullName: data.fullName,
         password: data.password,
       });
-
       const resp = await signIn("credentials", {
         ...data,
         redirect: false,
       });
-      
       if (!resp?.ok) {
         throw Error();
       }
-
       router.refresh();
     } catch (error) {
-      return console.log("Ошибка регистрации" + error);
+      console.log("Ошибка регистрации" + error);
     }
   };
 
@@ -59,16 +55,17 @@ export const RegisterForm: React.FC<Props> = () => {
         className="flex flex-col gap-5"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <FormInput name="email" label="E-Mail" required />
-        <FormInput name="fullName" label="Full Name" required />
-        <FormInput name="password" label="Password" type="password" required />
+        <FormInput name="email" placeholder="Email" required className="w-[374px] h-[54px]" />
+        <FormInput name="username" placeholder="Username" required className="w-[374px] h-[54px]" />
+        <FormInput name="fullName" placeholder="Full name" required className="w-[374px] h-[54px]" />
+        <FormInput name="password" placeholder="Password" type="password" required className="w-[374px] h-[54px]" />
         <FormInput
           name="confirmPassword"
-          label="Confirm Password"
+          placeholder="Confirm password"
           type="password"
           required
+          className="w-[374px] h-[54px]"
         />
-
         <Button
           loading={form.formState.isSubmitting}
           className="h-12 text-base"

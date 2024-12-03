@@ -12,9 +12,10 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   onClose?: VoidFunction;
+  onSwitchToRegister?: () => void;
 }
 
-export const LoginForm: React.FC<Props> = () => {
+export const LoginForm: React.FC<Props> = ({ onSwitchToRegister }) => {
   const router = useRouter();
   const form = useForm<TFormLoginValues>({
     resolver: zodResolver(formLoginSchema),
@@ -33,7 +34,6 @@ export const LoginForm: React.FC<Props> = () => {
       if (!resp?.ok) {
         throw Error();
       }
-
       router.refresh();
     } catch (error) {
       console.error("Error [LOGIN]", error);
@@ -46,15 +46,19 @@ export const LoginForm: React.FC<Props> = () => {
         className="flex flex-col gap-5"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <div className="flex justify-between items-center">
-          <div className="mr-2">
-            <p className="text-gray-400">Enter your email to login</p>
-          </div>
-        </div>
-
-        <FormInput name="email" label="E-Mail" required />
-        <FormInput name="password" label="Пароль" type="password" required />
-
+        <FormInput 
+          name="username" 
+          placeholder="Username" 
+          required 
+          className="w-[374px] h-[54px]"
+        />
+        <FormInput 
+          name="password" 
+          placeholder="Password" 
+          type="password" 
+          required 
+          className="w-[374px] h-[54px]"
+        />
         <Button
           loading={form.formState.isSubmitting}
           className="h-12 text-base"
@@ -62,6 +66,15 @@ export const LoginForm: React.FC<Props> = () => {
         >
           Login
         </Button>
+        <div className="flex flex-col text-center">
+          <p>If you don't have an account</p>
+          <p 
+            onClick={onSwitchToRegister}
+            className="underline text-black cursor-pointer hover:text-black/70 transition-colors"
+          >
+            follow these steps to join.
+          </p>
+        </div>
       </form>
     </FormProvider>
   );

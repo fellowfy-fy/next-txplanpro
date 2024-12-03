@@ -1,11 +1,10 @@
 "use client";
-
+import React, { useState } from 'react';
 import { useFormContext } from "react-hook-form";
 import { Input } from "../../ui/input";
 import { ClearButton } from "./clear-button";
 import { ErrorText } from "./error-text";
 import { RequiredSymbol } from "./required-symbol";
-import React from "react";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -14,6 +13,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   type?: string;
   isNumber?: boolean;
+  placeholder?: string;
 }
 
 export const FormInput: React.FC<Props> = ({
@@ -23,6 +23,7 @@ export const FormInput: React.FC<Props> = ({
   required,
   type,
   isNumber,
+  placeholder,
   ...props
 }) => {
   const {
@@ -32,7 +33,9 @@ export const FormInput: React.FC<Props> = ({
     setValue,
   } = useFormContext();
 
+  const [isFocused, setIsFocused] = useState(false);
   const value = watch(name);
+
   const errorText = errors[name]?.message as string;
 
   const formatValue = React.useMemo(() => {
@@ -54,21 +57,21 @@ export const FormInput: React.FC<Props> = ({
           {label} {required && <RequiredSymbol />}
         </p>
       )}
-
       <div className="relative">
         <Input
-          className="h-12 text-md"
+          className="h-[54px] text-md bg-[#F1F1F1] rounded-[15px] text-center placeholder:text-center"
           {...register(name, {
             setValueAs: isNumber ? (value: string) => Number(value) : undefined,
           })}
           value={formatValue}
           type={type}
+          placeholder={(isFocused || value) ? "" : placeholder}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           {...props}
         />
-
         {value && <ClearButton onClick={onClickClear} />}
       </div>
-
       {errorText && <ErrorText text={errorText} className="mt-2" />}
     </div>
   );
